@@ -1,5 +1,4 @@
 # KDT_Final_Project
-
 ## 팀 구성 및 역할
 
 <table align="center">
