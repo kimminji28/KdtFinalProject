@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 모든 페이지에서 공통으로 가져다 쓸 헤드 정보 설정 -->
+<head th:fragment="configFragment">
+  <meta charset="UTF-8">
+  <!-- Gentelella 필수 CSS 링크들 -->
+  <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+  <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+</head>
+</html>
