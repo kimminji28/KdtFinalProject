@@ -161,7 +161,6 @@ $RECYCLE.BIN/
 
 # local settings
 application.properties
-application-local.yml
 
 # upload files
 uploads/
