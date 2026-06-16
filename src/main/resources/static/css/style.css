@@ -1,1 +1,136 @@
 @charset "UTF-8";
+
+/* ==========================================================================
+   Weple Premium Theme - Definite Layout System
+   ========================================================================== */
+
+/* 1. 불릿 기호 제거 초기화 */
+.nav.side-menu li, 
+.sub_menu_nav ul li, 
+.nav.navbar-nav li {
+    list-style-type: none !important;
+}
+
+/* 2. [체크표시 영역] 좌측 사이드바 스타일 유지 및 고정 */
+body.nav-md .container.body .left_col {
+    background: #8daeff !important;
+}
+
+.nav_title {
+    background: #8daeff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.site_title span {
+    color: #1e56a0 !important;
+    font-weight: bold !important;
+    font-size: 22px !important;
+}
+
+.nav.side-menu > li > a {
+    color: #2c3e50 !important;
+    font-weight: bold !important;
+    background: transparent !important;
+}
+
+.nav.side-menu > li > a:hover,
+.nav.side-menu > li.active > a {
+    background: #4d84ff !important;
+    color: #ffffff !important;
+}
+
+/* 3. [우측 컨테이너] - ★ 요청하신 빨간 네모 영역 수정 */
+body.nav-md .container.body .right_col {
+    background: #f1f3f7 !important;
+    min-height: 100vh;
+    margin-left: 230px !important;       /* 사이드바 너비만큼 본문 영역을 오른쪽으로 밀어줌 */
+    width: calc(100% - 230px) !important; /* 전체 화면에서 사이드바를 제외한 나머지만 채움 */
+}
+
+/* 4. [네모 영역] 상단 헤더바 플렉스 정렬 (좌측 타이틀 - 우측 프로필) */
+.top_nav .nav_menu {
+    background: #ffffff !important;
+    border-bottom: 1px solid #ededed !important;
+    margin-bottom: 0 !important;
+    padding: 0 24px !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+/* 원래 자리에 그대로 고정되는 프로젝트 1 */
+.header-title-left {
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #2c3e50 !important;
+    margin: 0 !important;
+    line-height: 60px !important;
+}
+
+/* 우측 끝으로 밀어버리는 프로필 컨테이너 */
+.header-profile-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    height: 100% !important;
+}
+
+.header-profile-right .user-name {
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: #333333 !important;
+}
+
+/* ★ 프로필 이미지 - 종모양 아이콘과 동일한 진한 블루 테두리로 수정 */
+.header-profile-right img {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    border: 3px solid #1e56a0 !important; /* 종모양 색상(#1e56a0) 적용 및 선명하게 두께 조정 */
+}
+
+/* 5. [중단 서브 메뉴바] */
+.sub_menu_nav {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    width: 100% !important;
+}
+
+.sub_menu_nav ul {
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 0 24px !important;
+    margin: 0 !important;
+    gap: 20px !important;
+    height: 45px !important;
+    align-items: center !important;
+}
+
+.sub_menu_nav ul li a {
+    text-decoration: none !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    padding: 11px 2px !important;
+    display: inline-block !important;
+    background: none !important;
+    border: none !important;
+}
+
+.sub_menu_nav ul li.active a,
+.sub_menu_nav ul li a:hover {
+    color: #4d84ff !important;
+    border-bottom: 2px solid #4d84ff !important;
+}
+
+/* 6. [동그라미 영역 해결] 메인 본문 전체를 감싸는 순백색 캔버스 영역 */
+.main_white_canvas_container {
+    background: #ffffff !important; /* 메인 영역 전체 흰색 바탕 보장 */
+    margin: 24px !important;
+    padding: 30px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    min-height: calc(100vh - 160px) !important;
+}
