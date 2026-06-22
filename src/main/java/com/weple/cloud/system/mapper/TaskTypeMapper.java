@@ -6,10 +6,13 @@ import org.apache.ibatis.annotations.Param;
 
 import com.weple.cloud.system.service.TaskTypeVO;
 
-public interface SystemMapper {
-	// ---------------------------- 일감유형 --------------------------
+public interface TaskTypeMapper {
+
 	// 전체 조회
-	public List<TaskTypeVO> selectTaskTypeAll();
+	public List<TaskTypeVO> selectTaskTypeAll(Long companyId);
+	
+	// 상세 조회
+	public TaskTypeVO selectTaskTypeById(Integer typeId);
 	
 	// 등록
 	public int insertTaskType(TaskTypeVO taskType);
@@ -21,6 +24,7 @@ public interface SystemMapper {
 	public int updateTaskType(TaskTypeVO taskType);
 	
 	// 삭제
+	public int deleteTaskType(Integer typeId);
 	
-	
+
 }

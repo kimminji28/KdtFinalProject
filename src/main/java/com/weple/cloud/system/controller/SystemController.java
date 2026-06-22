@@ -3,21 +3,26 @@ package com.weple.cloud.system.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.weple.cloud.auth.service.LoginUserDetails;
 import com.weple.cloud.system.service.CodeValueService;
 import com.weple.cloud.system.service.GroupService;
 import com.weple.cloud.system.service.SystemGroupUserVO;
 import com.weple.cloud.system.service.SystemGroupVO;
-import com.weple.cloud.system.service.SystemService;
+import com.weple.cloud.system.service.SystemProjectService;
+import com.weple.cloud.system.service.SystemProjectVO;
+import com.weple.cloud.system.service.TaskTypeService;
 import com.weple.cloud.system.service.TaskTypeVO;
 import com.weple.cloud.system.service.UserService;
 
@@ -28,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SystemController {
 
-	private final SystemService systemService;
 	private final GroupService groupService;
 	private final UserService userService;
 	private final CodeValueService codeValueService;
@@ -63,6 +67,8 @@ public class SystemController {
 		groupService.removeGroup(groupId);
 		return "redirect:groupList";
 	}
+	
+
 
 	// ---------------------------- 그룹 내 사용자 --------------------------
 	// 전체조회
@@ -162,44 +168,63 @@ public class SystemController {
 	}
 
 	// -------------------------------일감유형------------------------------
+	
+	private final TaskTypeService taskTypeService;
+	
 	// 전체조회
 	@GetMapping("/system/taskType")
-	public String systemTaskTypeList(Model model) {
-		List<TaskTypeVO> list = systemService.findTaskTypeAll();
+	public String systemTaskTypeList(@AuthenticationPrincipal LoginUserDetails loginUser, Model model) {
+		Long companyId = loginUser.getLoginUser().getCompanyId();
+		List<TaskTypeVO> list = taskTypeService.findTaskTypeAll(companyId);
 		model.addAttribute("taskTypes", list);
 		return "weple/system/taskType/list";
 	}
 
 	// 등록페이지 조회
-	@GetMapping("/system/taskTypeInsert")
+	@GetMapping("/system/taskType/Insert")
 	public String taskTypeInsert() {
 		return "weple/system/taskType/register";
 	}
 
 	// 등록하기
-	@PostMapping("/system/taskTypeInsert")
-	public String systemTaskTypeInsert(TaskTypeVO taskTypeVO) {
-		systemService.addTaskType(taskTypeVO);
+	@PostMapping("/system/taskType/Insert")
+	public String systemTaskTypeInsert(@AuthenticationPrincipal LoginUserDetails loginUser, TaskTypeVO taskTypeVO) {
+		Long companyId = loginUser.getLoginUser().getCompanyId();
+		taskTypeVO.setCompanyId(companyId);
+		taskTypeService.addTaskType(taskTypeVO);
 		return "redirect:/system/taskType";
 	}
 
 	// 순서 수정하기 (드래그&드랍으로 변경된 순서)
-	@PutMapping("/system/taskTypeReorder")
+	@PostMapping("/system/taskType/Reorder")
 	@ResponseBody
 	public ResponseEntity<String> systemTaskTypeReorder(@RequestBody List<Integer> sortedIds) {
-		systemService.reorderTaskTypes(sortedIds);
+		taskTypeService.reorderTaskTypes(sortedIds);
 		return ResponseEntity.ok("SUCCESS");
 	}
 
 	// 수정페이지 조회
-	@GetMapping("/system/taskTypeUpdate")
-	public String taskTypeUpdate() {
+	@GetMapping("/system/taskType/Update")
+	public String taskTypeUpdate(@RequestParam("typeId") int typeId, Model model) {
+		TaskTypeVO taskType = taskTypeService.findTaskTypeById(typeId);
+		model.addAttribute("taskType", taskType);
 		return "weple/system/taskType/register";
 	}
 
 	// 수정하기
-//	@PutMapping("/system/taskTypeUpdate")
-//	public String
+	@PostMapping("/system/taskType/Update")
+	public String systemTaskTypeUpdate(TaskTypeVO taskTypeVO) {
+		taskTypeService.updateTaskType(taskTypeVO);
+		return "redirect:/system/taskType";
+	}
+	
+	// 삭제하기
+	@PostMapping("/system/taskType/Delete/{typeId}")
+	@ResponseBody
+	public ResponseEntity<String> systemTaskTypeDelete(@PathVariable("typeId") int typeId) {
+		taskTypeService.deleteTaskType(typeId);
+		return ResponseEntity.ok("SUCCESS");
+	}
 
 	// ---------------------------- 가입승인 --------------------------
 	private final com.weple.cloud.system.service.SignupApprovalService signupApprovalService;
@@ -245,8 +270,7 @@ public class SystemController {
 		}
 		return "redirect:/approvalList";
 	}
-	// -------------------------------프로젝트------------------------------
-	// 프로젝트 생성
+
 
 	// -------------------------------코드값------------------------------
 	// 전체조회
@@ -262,6 +286,36 @@ public class SystemController {
     public String showFormPage(Model model) {
         return "weple/admin/code/codeForm";
     }
+	
+	// -------------------------------프로젝트------------------------------
+	// 프로젝트 생성
+	@Autowired
+	private SystemProjectService systemProjectService;
+	
+	@GetMapping("/system/project")
+	public String projectCreateForm(Model model) {
+		
+		model.addAttribute("sidebarMenu", "system");
+		model.addAttribute("currentMenu", "systemproject");
+		
+		return "weple/system/projectCreate";
+	}
+	
+	@PostMapping("/system/project")
+	public String projectCreateProcess(SystemProjectVO projectVO, Model model) {
+		int result = systemProjectService.createProject(projectVO);
+		
+		if(result > 0) {
+			return "redirect:/project";
+		}else {
+			model.addAttribute("errorMessage", "프로젝트 생성에 실패했습니다.");
+			model.addAttribute("sidebarMenu", "system");
+			model.addAttribute("currentMenu", "systemproject");
+			
+			
+			return "weple/system/projectCreate";
+		}
+	}
 	
 	// 등록
 
