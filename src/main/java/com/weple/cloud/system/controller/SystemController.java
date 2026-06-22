@@ -1,7 +1,9 @@
 package com.weple.cloud.system.controller;
 
+
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -129,7 +131,33 @@ public class SystemController {
 	}
 	//-------------------------------프로젝트------------------------------
 	// 프로젝트 생성
+	@Autowired
+	private SystemProjectService systemProjectService;
 	
+	@GetMapping("/system/project")
+	public String projectCreateForm(Model model) {
+		
+		model.addAttribute("sidebarMenu", "system");
+		model.addAttribute("currentMenu", "systemproject");
+		
+		return "weple/system/projectCreate";
+	}
+	
+	@PostMapping("/system/project")
+	public String projectCreateProcess(SystemProjectVO projectVO, Model model) {
+		int result = systemProjectService.createProject(projectVO);
+		
+		if(result > 0) {
+			return "redirect:/project";
+		}else {
+			model.addAttribute("errorMessage", "프로젝트 생성에 실패했습니다.");
+			model.addAttribute("sidebarMenu", "system");
+			model.addAttribute("currentMenu", "systemproject");
+			
+			
+			return "weple/system/projectCreate";
+		}
+	}
 	
 	
 }
