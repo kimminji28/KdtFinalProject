@@ -8,13 +8,16 @@
 	</select>
 	<!-- 프로젝트 생성 -->
 	<insert id="insertInfo" parameterType="com.weple.cloud.system.service.SystemProjectVO">
+		 <selectKey keyProperty="projectId" resultType="long" order="BEFORE">
+            SELECT NVL(MAX(project_id), 0) + 1 FROM project
+        </selectKey>
+        
 		INSERT INTO project(
-			p.project_id,
-			p.project_title,
-            p.project_describe,
-            p.project_identifier,
-            p.status,
-            c.default_describe AS project_status_name,
+			project_id,
+			project_title,
+            project_describe,
+        	project_identifier,
+            status,
             start_date,
             finish_date,
             created_at
@@ -24,9 +27,9 @@
             #{projectTitle},
             #{projectDescribe},
             #{projectIdentifier},
-            'j1',
-            SYSDATE - INTERVAL '9' HOUR,
-            SYSDATE - INTERVAL '9' HOUR,
+            'J1',
+            #{startDate},
+        	#{finishDate},
             SYSDATE - INTERVAL '9' HOUR
 		)
 	</insert>
