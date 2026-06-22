@@ -174,19 +174,15 @@
 		    // 4. submit 처리 (핵심)
 		    if (form) {
 		        form.addEventListener('submit', (e) => {
-
 		            e.preventDefault();
 
 		            const currentGrid = document.querySelectorAll('.user-grid')[0];
-
 		            const finalUserIds = Array.from(
 		                currentGrid.querySelectorAll('.user-item input')
 		            ).map(cb => cb.value);
 
-		            // 기존 hidden 제거
 		            document.querySelectorAll('input[name="currentUserIds"]').forEach(el => el.remove());
 
-		            // hidden 생성
 		            finalUserIds.forEach(id => {
 		                const input = document.createElement('input');
 		                input.type = 'hidden';
@@ -195,7 +191,6 @@
 		                form.appendChild(input);
 		            });
 
-		            // 안전하게 submit
 		            setTimeout(() => {
 		                form.submit();
 		            }, 0);
