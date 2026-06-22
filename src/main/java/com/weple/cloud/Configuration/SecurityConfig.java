@@ -36,6 +36,10 @@ public class SecurityConfig {
                 // 가입승인 화면과 승인 처리는 기업 최고관리자 또는 관리자만 접근할 수 있습니다.
                 .requestMatchers("/approvalList", "/approvalList/**")
                 .hasAnyAuthority("ROLE_COMPANY_OWNER", "ROLE_COMPANY_ADMIN")
+                
+                // 일감유형 화면과 일감유형 CRUD는 최고관리자 또는 관리자만 접근할 수 있다
+                .requestMatchers("/system/taskType", "/system/taskType/**")
+                .hasAnyAuthority("ROLE_COMPANY_OWNER", "ROLE_COMPANY_ADMIN")
 
                 // 그 외 요청은 로그인 필요
                 .anyRequest().authenticated()
