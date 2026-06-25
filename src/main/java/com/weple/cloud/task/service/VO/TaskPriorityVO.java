@@ -1,4 +1,4 @@
-package com.weple.cloud.task.service;
+package com.weple.cloud.task.service.VO;
 
 import lombok.Builder;
 import lombok.Getter;

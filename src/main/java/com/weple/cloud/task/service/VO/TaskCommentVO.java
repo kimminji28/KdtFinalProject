@@ -1,4 +1,4 @@
-package com.weple.cloud.task.service;
+package com.weple.cloud.task.service.VO;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +17,7 @@ public class TaskCommentVO {
 	private Long parentCommentId;
 	private String userCode;
 	private String userName;
+	private String email;
 	private String profileImage;
 	private String taskComment;
 	private LocalDateTime createdAt;

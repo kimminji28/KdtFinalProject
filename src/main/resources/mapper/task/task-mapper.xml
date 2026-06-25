@@ -261,15 +261,96 @@
         tc.task_id taskId,
         tc.parent_comment_id parentCommentId,
         tc.user_code userCode,
+        u.email,
         u.user_name userName,
         u.profile_image profileImage,
         tc.task_comment taskComment,
         tc.created_at AS createdAt
-	FROM task_comment tc JOIN users u ON tc.user_code = u.user_code
+	FROM task_comment tc LEFT JOIN users u ON tc.user_code = u.user_code
 	WHERE task_id = #{tId}
 	ORDER BY tc.comment_id ASC
 </select>
 
 
+
+<!--
+댓글 아이디 자동 시퀀스 + pl sql 
+CREATE SEQUENCE task_comment_seq START WITH 1
+INCREMENT BY 1   
+NOCACHE    
+NOCYCLE;
+
+task_comment에 insert 하기 전에 실행하는 행을 기준으로 comment_id가 null이면 nextval 넣음
+CREATE OR REPLACE TRIGGER task_comment_pk
+BEFORE INSERT ON task_comment
+FOR EACH ROW
+BEGIN
+  IF :NEW.comment_id IS NULL THEN
+    :NEW.comment_id := task_comment_seq.NEXTVAL;
+  END IF;
+END;
+/
+
+ -->
+
+
+<insert id="insertTaskComment" parameterType="TaskCommentVO">
+    INSERT INTO task_comment (
+        task_id, 
+        parent_comment_id,
+        task_comment, 
+        user_code, 
+        created_at
+    ) VALUES (
+        #{taskId}, 
+        #{parentCommentId}, 
+        #{taskComment}, 
+        #{userCode},
+        SYSDATE + 9/24
+    )
+</insert>
+
+<update id="updateTaskComment" parameterType="TaskCommentVO">
+    UPDATE task_comment
+    SET 
+        task_comment = #{taskComment}
+    WHERE 
+        comment_id = #{commentId}
+        AND user_code = #{userCode} 
+</update>
+
+<update id="deleteTaskComment">
+    UPDATE task_comment
+    SET 
+        task_comment = '삭제된 댓글입니다.',
+        user_code = NULL
+    WHERE 
+        comment_id = #{commentId}
+</update>
+<select id = "taskUpdateHistory">
+	SELECT 
+		th.history_id AS historyId,
+    	u.user_name AS userName,
+   	 	action_at AS actionAt,
+    	field_name AS fieldName,
+    	old_value AS oldValue,
+    	new_value AS newValue
+	FROM task_history th 
+    	JOIN task_history_detail thd 
+        	ON th.history_id = thd.history_id
+    	JOIN users u
+        	ON th.changed_by = u.user_code
+	WHERE th.task_id = #{tId} AND th.action_type = 'UPDATE'
+</select>
+<select id="taskSpentTime">
+	SELECT 
+    	wt.created_at AS createdAt,
+    	u.user_name AS userName,
+    	wt.spent_content AS spentContent,
+    	wt.spent_hour AS spentHour
+	FROM 
+		work_time wt LEFT JOIN users u ON wt.user_code = u.user_code
+	WHERE task_id = #{tId}
+</select>
 
 </mapper>
