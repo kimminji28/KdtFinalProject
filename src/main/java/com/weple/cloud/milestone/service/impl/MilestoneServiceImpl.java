@@ -10,7 +10,7 @@ import com.weple.cloud.milestone.service.MilestoneInfoVO;
 import com.weple.cloud.milestone.service.MilestoneService;
 import com.weple.cloud.milestone.service.MilestoneVO;
 import com.weple.cloud.milestone.service.TaskGroupStatVO;
-import com.weple.cloud.task.service.TaskVO;
+import com.weple.cloud.task.service.VO.TaskVO;
 
 import lombok.RequiredArgsConstructor;
 

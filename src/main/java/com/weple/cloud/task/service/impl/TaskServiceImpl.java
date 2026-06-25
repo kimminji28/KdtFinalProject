@@ -1,7 +1,10 @@
 package com.weple.cloud.task.service.impl;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,16 +17,20 @@ import com.weple.cloud.file.FileVO;
 import com.weple.cloud.file.mapper.FileMapper;
 import com.weple.cloud.milestone.mapper.MilestoneMapper;
 import com.weple.cloud.task.mapper.TaskMapper;
-import com.weple.cloud.task.service.TaskCommentVO;
-import com.weple.cloud.task.service.TaskMemberVO;
-import com.weple.cloud.task.service.TaskMilestoneVO;
-import com.weple.cloud.task.service.TaskParentVO;
-import com.weple.cloud.task.service.TaskPriorityVO;
-import com.weple.cloud.task.service.TaskProjectSelectVO;
+import com.weple.cloud.task.service.TaskHistoryDTO;
+import com.weple.cloud.task.service.TaskHistoryDetailDTO;
 import com.weple.cloud.task.service.TaskService;
-import com.weple.cloud.task.service.TaskStatusVO;
-import com.weple.cloud.task.service.TaskTypeListVO;
-import com.weple.cloud.task.service.TaskVO;
+import com.weple.cloud.task.service.VO.TaskCommentVO;
+import com.weple.cloud.task.service.VO.TaskMemberVO;
+import com.weple.cloud.task.service.VO.TaskMilestoneVO;
+import com.weple.cloud.task.service.VO.TaskParentVO;
+import com.weple.cloud.task.service.VO.TaskPriorityVO;
+import com.weple.cloud.task.service.VO.TaskProjectSelectVO;
+import com.weple.cloud.task.service.VO.TaskSpentTimeVO;
+import com.weple.cloud.task.service.VO.TaskStatusVO;
+import com.weple.cloud.task.service.VO.TaskTypeListVO;
+import com.weple.cloud.task.service.VO.TaskUpdateHistoryVO;
+import com.weple.cloud.task.service.VO.TaskVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -246,7 +253,7 @@ public class TaskServiceImpl implements TaskService {
 	        }
 	    }
 	}
-	// 삭제
+	// 일감 삭제
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteTask(String tId) {
@@ -262,15 +269,72 @@ public class TaskServiceImpl implements TaskService {
 	        syncMilestoneStatus(milestoneId);
 	    }
 	}
+	//댓글 목록 조회
 	@Override
 	public List<TaskCommentVO>findTaskComment(String tId) {
 		return taskMapper.taskCommentList(tId);
 	}
+	//댓글 등록
+	@Transactional
+	@Override
+	public int insertTaskComment(TaskCommentVO commentVO) {
+		System.out.println("들어온값:" + commentVO);
+		return  taskMapper.insertTaskComment(commentVO);
+	}
+	//댓글 수정
+	@Transactional
+	@Override
+	public int updateTaskComment(TaskCommentVO commentVO) {
+		return taskMapper.updateTaskComment(commentVO);
+	}
+	//댓글 삭제
+	@Transactional
+	@Override
+	public int deleteTaskComment(Long commentId ,String userCode) {
+		return taskMapper.deleteTaskComment(commentId , userCode );
+	}
+	
+	// 항목 변경이력
+	@Override
+	public List<TaskHistoryDTO> taskUpdateHistory(String tId) {
+	    List<TaskUpdateHistoryVO> list = taskMapper.taskUpdateHistory(tId);
+
+	    Map<Long, TaskHistoryDTO> hisMap = new LinkedHashMap<>();
+
+	    for (TaskUpdateHistoryVO value : list) {
+
+	        TaskHistoryDTO historyDTO = hisMap.get(value.getHistoryId());
+
+	        if (historyDTO == null) {
+	            historyDTO = new TaskHistoryDTO();
+	            historyDTO.setHistoryId(value.getHistoryId());
+	            historyDTO.setUserName(value.getUserName());
+	            historyDTO.setActionAt(value.getActionAt());
+	            historyDTO.setDetails(new ArrayList<>());
+
+	            hisMap.put(value.getHistoryId(), historyDTO);
+	        }
+
+	        TaskHistoryDetailDTO detailDTO = new TaskHistoryDetailDTO();
+	        detailDTO.setFieldName(value.getFieldName());
+	        detailDTO.setOldValue(value.getOldValue());
+	        detailDTO.setNewValue(value.getNewValue());
+
+	        historyDTO.getDetails().add(detailDTO);
+	    }
+
+	    return new ArrayList<>(hisMap.values());
+	}
+	//소요시간
+	@Override
+	public List<TaskSpentTimeVO> taskSpentTime(String tId) {
+		
+		return taskMapper.taskSpentTime(tId);
 	
 	private void syncMilestoneStatus(Long milestoneId) {
 	    if (milestoneId != null && milestoneId > 0) {
 	        milestoneMapper.updateMilestoneStatusByTaskProgress(milestoneId);
 	    }
-	}
+	
+}}
 
-}
