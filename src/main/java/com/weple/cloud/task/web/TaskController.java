@@ -21,13 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.weple.cloud.auth.service.LoginUserDetails;
 import com.weple.cloud.history.task.service.TaskHistoryService;
 import com.weple.cloud.project.service.ProjectService;
+import com.weple.cloud.task.service.TaskCommentVO;
 import com.weple.cloud.task.service.TaskHistoryDTO;
+import com.weple.cloud.task.service.TaskProjectSelectVO;
 import com.weple.cloud.task.service.TaskService;
-import com.weple.cloud.task.service.VO.TaskCommentVO;
-import com.weple.cloud.task.service.VO.TaskProjectSelectVO;
-import com.weple.cloud.task.service.VO.TaskSpentTimeVO;
-import com.weple.cloud.task.service.VO.TaskUpdateHistoryVO;
-import com.weple.cloud.task.service.VO.TaskVO;
+import com.weple.cloud.task.service.TaskSpentTimeVO;
+import com.weple.cloud.task.service.TaskUpdateHistoryVO;
+import com.weple.cloud.task.service.TaskVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -282,7 +282,9 @@ public class TaskController {
 	    String userCode = loginUser.getLoginUser().getUserCode();
 	    
 	    // 삭제 전 값 먼저 조회 (이력 저장을 위한 기존 데이터)
+	    System.out.println("taskID: " + tId);
 	    TaskVO before = taskService.findTaskDetail(tId);
+	    System.out.println("aaa:" + before);
 	    String oldTitle = before.getTaskTitle();
 	    String oldTypeName = before.getTypeIdName();
 	    

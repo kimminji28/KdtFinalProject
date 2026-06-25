@@ -17,20 +17,20 @@ import com.weple.cloud.file.FileVO;
 import com.weple.cloud.file.mapper.FileMapper;
 import com.weple.cloud.milestone.mapper.MilestoneMapper;
 import com.weple.cloud.task.mapper.TaskMapper;
+import com.weple.cloud.task.service.TaskCommentVO;
 import com.weple.cloud.task.service.TaskHistoryDTO;
 import com.weple.cloud.task.service.TaskHistoryDetailDTO;
+import com.weple.cloud.task.service.TaskMemberVO;
+import com.weple.cloud.task.service.TaskMilestoneVO;
+import com.weple.cloud.task.service.TaskParentVO;
+import com.weple.cloud.task.service.TaskPriorityVO;
+import com.weple.cloud.task.service.TaskProjectSelectVO;
 import com.weple.cloud.task.service.TaskService;
-import com.weple.cloud.task.service.VO.TaskCommentVO;
-import com.weple.cloud.task.service.VO.TaskMemberVO;
-import com.weple.cloud.task.service.VO.TaskMilestoneVO;
-import com.weple.cloud.task.service.VO.TaskParentVO;
-import com.weple.cloud.task.service.VO.TaskPriorityVO;
-import com.weple.cloud.task.service.VO.TaskProjectSelectVO;
-import com.weple.cloud.task.service.VO.TaskSpentTimeVO;
-import com.weple.cloud.task.service.VO.TaskStatusVO;
-import com.weple.cloud.task.service.VO.TaskTypeListVO;
-import com.weple.cloud.task.service.VO.TaskUpdateHistoryVO;
-import com.weple.cloud.task.service.VO.TaskVO;
+import com.weple.cloud.task.service.TaskSpentTimeVO;
+import com.weple.cloud.task.service.TaskStatusVO;
+import com.weple.cloud.task.service.TaskTypeListVO;
+import com.weple.cloud.task.service.TaskUpdateHistoryVO;
+import com.weple.cloud.task.service.TaskVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -330,11 +330,14 @@ public class TaskServiceImpl implements TaskService {
 	public List<TaskSpentTimeVO> taskSpentTime(String tId) {
 		
 		return taskMapper.taskSpentTime(tId);
+		}
 	
 	private void syncMilestoneStatus(Long milestoneId) {
 	    if (milestoneId != null && milestoneId > 0) {
 	        milestoneMapper.updateMilestoneStatusByTaskProgress(milestoneId);
 	    }
 	
-}}
+}
+	}
+
 

@@ -3,7 +3,7 @@ package com.weple.cloud.milestone.service;
 import java.util.List;
 
 import com.weple.cloud.milestone.service.MilestoneDetailVO;
-import com.weple.cloud.task.service.VO.TaskVO;
+import com.weple.cloud.task.service.TaskVO;
 
 public interface MilestoneService {
 

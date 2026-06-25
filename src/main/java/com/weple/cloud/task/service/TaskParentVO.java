@@ -1,5 +1,4 @@
-package com.weple.cloud.task.service.VO;
-
+package com.weple.cloud.task.service;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TaskMemberVO {
-	private String userCode;
-	private String email;
-	private String userName;
+public class TaskParentVO {
+	private String taskId;
+	private String taskTitle;
 }

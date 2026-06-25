@@ -15,7 +15,7 @@
 		<result property="totalSpentHour" column="totalSpentHour"/>
 	</resultMap>
 	
-	<select id="SelectTotalTimeAll" resultType="SelectTotalTimeVO">
+	<select id="SelectTotalTimeAll" resultMap="TotalTimeResultMap">
 		SELECT w_tme.work_id
        		   , p.project_id
        		   , t.task_id

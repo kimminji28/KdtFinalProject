@@ -42,7 +42,7 @@ function openTab(evt, tabName) {
 document.addEventListener("DOMContentLoaded", function() {
 
 	const taskDeleteDialog = document.getElementById('taskDeleteDialog');
-	const taskDeleteForm = document.getElementById('taskDeleteForm');
+	const taskDeleteForm = document.getElementById('taskDeleteForm'); // 💡 변수명은 'taskDeleteForm'임
 	const taskDeleteName = document.getElementById('taskDeleteName');
 	const taskDeletePrompt = document.getElementById('taskDeletePrompt');
 	const confirmInput = document.getElementById('taskDeleteConfirmationName');
@@ -65,10 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			// 버튼 비활성화 초기화
 			submitBtn.disabled = true;
 
-			// ⭐️ 핵심: 기존 컨트롤러가 사용하는 PathVariable과 QueryParam 주소 동적 세팅
-
-
-			taskDeleteForm.action = '/project/task/delete/soft?projectId=' + projectId + '&tId=' + taskId;
+			taskDeleteForm.action = `/project/task/delete/${taskId}?projectId=${projectId}`;
 
 			// 실시간 입력값 비교 체크 (일감명이 정확히 일치할 때만 버튼 활성화)
 			confirmInput.oninput = function() {
@@ -82,14 +79,15 @@ document.addEventListener("DOMContentLoaded", function() {
 			taskDeleteDialog.showModal();
 		});
 	});
-
-	// 2. 모달 닫기 처리
-document.querySelectorAll('[data-task-delete-close]').forEach(function(button) {
-	button.addEventListener('click', function() {
-		taskDeleteDialog.close();
+	document.querySelectorAll('[data-task-delete-close]').forEach(function(button) {
+		button.addEventListener('click', function() {
+			taskDeleteDialog.close();
+			});
 		});
-	});
+    // (아래쪽에 dialog 닫기 버튼 이벤트 처리 코드 등이 이어서 존재할 것입니다)
 });
+
+
 
 function toggleReplyForm(parentId, targetUser) {
 	const formDiv = document.getElementById('reply-form-' + parentId);

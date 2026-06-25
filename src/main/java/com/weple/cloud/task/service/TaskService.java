@@ -6,17 +6,6 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.weple.cloud.history.task.service.TaskHistoryVO;
-import com.weple.cloud.task.service.VO.TaskCommentVO;
-import com.weple.cloud.task.service.VO.TaskMemberVO;
-import com.weple.cloud.task.service.VO.TaskMilestoneVO;
-import com.weple.cloud.task.service.VO.TaskParentVO;
-import com.weple.cloud.task.service.VO.TaskPriorityVO;
-import com.weple.cloud.task.service.VO.TaskProjectSelectVO;
-import com.weple.cloud.task.service.VO.TaskSpentTimeVO;
-import com.weple.cloud.task.service.VO.TaskStatusVO;
-import com.weple.cloud.task.service.VO.TaskTypeListVO;
-import com.weple.cloud.task.service.VO.TaskUpdateHistoryVO;
-import com.weple.cloud.task.service.VO.TaskVO;
 
 public interface TaskService {
 	public List<TaskVO> findAll(Long pId);

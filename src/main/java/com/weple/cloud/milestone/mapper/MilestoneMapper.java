@@ -8,7 +8,7 @@ import com.weple.cloud.milestone.service.MilestoneDetailVO;
 import com.weple.cloud.milestone.service.MilestoneInfoVO;
 import com.weple.cloud.milestone.service.MilestoneVO;
 import com.weple.cloud.milestone.service.TaskGroupStatVO;
-import com.weple.cloud.task.service.VO.TaskVO;
+import com.weple.cloud.task.service.TaskVO;
 
 public interface MilestoneMapper {
 	
