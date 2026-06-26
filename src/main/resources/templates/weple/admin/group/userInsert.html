@@ -44,20 +44,19 @@
 						<input type="hidden" name="groupId" th:value="${groupId}" />
 
 						<div class="list-section">
-
-							<div class="group-box-card">
-								<div class="group-title">현재 소속되어있는 사용자 목록</div>
-								<div class="user-grid">
-									<th:block th:each="user : ${currentGroupUsers}">
-										<label class="user-item"> <input type="checkbox"
-											name="currentUserIds" th:value="${user.userCode}" /> <span
-											class="checkbox-custom"></span> <span class="user-name"
-											th:text="${user.userName}">사용자명</span>
-										</label>
-									</th:block>
-								</div>
+							<div class="group-box-card" id="availableGroup">
+							    <div class="group-title">추가할 사용자 목록</div>
+							    <div class="user-grid">
+							        <th:block th:each="user : ${availableUsers}">
+							            <label class="user-item"> 
+							                <input type="checkbox" name="availableUserIds" th:value="${user.userCode}" /> 
+							                <span class="checkbox-custom"></span> 
+							                <span class="user-name" th:text="${user.userName}">사용자명</span>
+							            </label>
+							        </th:block>
+							    </div>
 							</div>
-
+							
 							<div class="direction-arrows">
 								<svg id="btnMoveDown" xmlns="http://www.w3.org/2000/svg"
 									width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -73,17 +72,17 @@
         						</svg>
 							</div>
 
-							<div class="group-box-card">
-								<div class="group-title">추가할 사용자 목록</div>
-								<div class="user-grid">
-									<th:block th:each="user : ${availableUsers}">
-										<label class="user-item"> <input type="checkbox"
-											name="availableUserIds" th:value="${user.userCode}" /> <span
-											class="checkbox-custom"></span> <span class="user-name"
-											th:text="${user.userName}">사용자명</span>
-										</label>
-									</th:block>
-								</div>
+							<div class="group-box-card" id="currentGroup">
+							    <div class="group-title">현재 소속되어있는 사용자 목록</div>
+							    <div class="user-grid">
+							        <th:block th:each="user : ${currentGroupUsers}">
+							            <label class="user-item"> 
+							                <input type="checkbox" name="currentUserIds" th:value="${user.userCode}" /> 
+							                <span class="checkbox-custom"></span> 
+							                <span class="user-name" th:text="${user.userName}">사용자명</span>
+							            </label>
+							        </th:block>
+							    </div>
 							</div>
 
 						</div>
