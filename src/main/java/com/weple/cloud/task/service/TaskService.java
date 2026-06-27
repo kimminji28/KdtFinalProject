@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.weple.cloud.file.FileDownloadDTO;
+
 public interface TaskService {
 	public List<TaskVO> findAll(Long pId);
 	
@@ -53,5 +55,16 @@ public interface TaskService {
 	
 	public List<TaskMemberVO> findAllMemberList();
 	
-	TaskPermissionVO getTaskPermissions(String userCode, Long pId);
+	public TaskPermissionVO getTaskPermissions(String userCode, Long pId);
+	
+	// [내부 일감] 총 개수
+    public int countAllWithFilters(Map<String, Object> params);
+
+    // [전체 일감 - 관리자/소유자용] 총 개수
+    public int countAllList(Map<String, Object> params);
+
+    // [전체 일감 - 일반 멤버용] 총 개수
+    public int countAllMyTasksWithFilters(Map<String, Object> params);
+    
+    public FileDownloadDTO getFileForDownload(Long versionId);
 }

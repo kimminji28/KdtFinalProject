@@ -29,6 +29,7 @@
 
 		<div class="filter-box">
 			<form id="searchForm" method="get" th:action="@{/task/all-list}">
+			<input type="hidden" id="pageInput" name="page" th:value="${currentPage != null ? currentPage : 1}">
 				<div class="row" style="margin-bottom: 20px;">
 					<div class="col-md-4 col-md-offset-8">
 						<div class="input-group input-group-sm search-group">
@@ -151,8 +152,8 @@
 					<div style="margin: 0 auto; margin-left: 47%;"></div>
 					<div style="display: flex; gap: 8px;">
 						<button type="button" class="btn-pill-light"
-							th:onclick="|location.href='@{/task/all}'|">🔄 지우기</button>
-						<button type="submit" class="btn-pill-primary">적용</button>
+							th:onclick="|location.href='@{/task/all-list}'|">🔄 지우기</button>
+						<button type="submit" class="btn-pill-primary" onclick="document.getElementById('pageInput').value=1;">적용</button>
 					</div>
 				</div>
 			</form>
@@ -234,6 +235,25 @@
 					</tr>
 				</tbody>
 			</table>
+			<div class="pagination-wrap" th:if="${totalPages != null and totalPages > 0}">
+    <a href="javascript:void(0);"
+       th:onclick="${currentPage != null and currentPage > 1} ? '|goPage(${currentPage - 1})|' : ''"
+       th:classappend="${currentPage == null or currentPage <= 1} ? 'disabled'"
+       class="page-btn">&lt; 이전</a>
+
+    <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <a href="javascript:void(0);"
+           th:onclick="|goPage(${i})|"
+           th:text="${i}"
+           th:classappend="${i == currentPage} ? 'active'"
+           class="page-btn">1</a>
+    </th:block>
+
+    <a href="javascript:void(0);"
+       th:onclick="${currentPage != null and currentPage < totalPages} ? '|goPage(${currentPage + 1})|' : ''"
+       th:classappend="${currentPage == null or currentPage >= totalPages} ? 'disabled'"
+       class="page-btn">다음 &gt;</a>
+</div>
 		</div>
 
 		<dialog class="repository-delete-dialog" id="taskDeleteDialog"

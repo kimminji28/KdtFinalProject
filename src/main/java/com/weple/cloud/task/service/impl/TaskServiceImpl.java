@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.weple.cloud.file.FileInfoVO;
 import com.weple.cloud.file.FileVO;
+import com.weple.cloud.file.FileDownloadDTO;
 import com.weple.cloud.file.mapper.FileMapper;
 import com.weple.cloud.milestone.mapper.MilestoneMapper;
 import com.weple.cloud.task.mapper.TaskMapper;
@@ -364,6 +365,26 @@ public class TaskServiceImpl implements TaskService {
         
         return permissions;
 	}
-	}
+	@Override
+    public int countAllWithFilters(Map<String, Object> params) {
+        return taskMapper.countAllWithFilters(params);
+    }
+
+    @Override
+    public int countAllList(Map<String, Object> params) {
+        return taskMapper.countAllList(params);
+    }
+
+    @Override
+    public int countAllMyTasksWithFilters(Map<String, Object> params) {
+        return taskMapper.countAllMyTasksWithFilters(params);
+    }
+    
+    @Override
+    public FileDownloadDTO getFileForDownload(Long versionId) {
+    	
+        return fileMapper.selectFileForDownload(versionId);
+    }
+}
 
 

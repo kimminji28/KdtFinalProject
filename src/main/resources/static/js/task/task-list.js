@@ -58,3 +58,8 @@ function redirectToInsertTask() {
 		    placeholderValue: '담당자를 선택하세요'
 		});
 	});
+	
+	function goPage(pageNumber) {
+	            document.getElementById('pageInput').value = pageNumber;
+	            document.getElementById('searchForm').submit();
+	        }

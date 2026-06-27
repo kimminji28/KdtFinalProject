@@ -278,3 +278,43 @@
     color: #ef4444;
     background-color: #fef2f2;
 }
+
+
+/* =======================================
+   페이징(Pagination) 스타일
+======================================= */
+.pagination-wrap {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    gap: 6px;
+    margin-top: 20px; /* 테이블과의 간격 */
+    margin-bottom: 20px;
+}
+
+.page-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    text-decoration: none !important;
+    color: #5d6b87;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.page-btn.active {
+    background: #4d84ff;
+    color: #fff;
+    font-weight: 700;
+}
+
+.page-btn.disabled {
+    opacity: .3;
+    pointer-events: none;
+}
+
+.page-btn:hover:not(.active):not(.disabled) {
+    background: #eef4ff;
+    color: #4d84ff;
+}

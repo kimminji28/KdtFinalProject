@@ -1,9 +1,16 @@
 package com.weple.cloud.task.web;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import com.weple.cloud.auth.service.LoginUserDetails;
+import com.weple.cloud.file.FileDownloadDTO;
 import com.weple.cloud.history.task.service.TaskHistoryService;
 import com.weple.cloud.project.service.ProjectService;
 import com.weple.cloud.task.service.TaskCommentVO;
@@ -45,6 +54,7 @@ public class TaskController {
 	//프로젝트 내부 일감 목록 페이지 로드
 	@GetMapping("/project/task")
 	public String projectTaskList(
+			@RequestParam(value = "page", defaultValue = "1") int page,
 	        @RequestParam("projectId") Long pId,
 	        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
 	        @RequestParam(value = "typeIds", required = false) List<Integer> typeIds,
@@ -80,6 +90,10 @@ public class TaskController {
 		if (!isProjectMember && !isAdminOrOwner) {
 			return "weple/access-denide"; // 구성원이 아니면 접근 불가 페이지 리턴
 		}
+		
+		// ✨ 2. 페이징 계산을 위한 변수 설정
+	    int pageSize = 10; // 한 페이지에 보여줄 일감 개수
+	    int offset = (page - 1) * pageSize; // DB에서 가져올 시작 위치
 
 	    Map<String, Object> filterParams = new HashMap<>();
 	    filterParams.put("tManager", userCode); // loginUser.getLoginUser().getUserCode() 대신 미리 꺼내둔 변수 사용
@@ -92,8 +106,18 @@ public class TaskController {
 	    filterParams.put("progress", progress);
 	    filterParams.put("regDate", regDate);
 	    filterParams.put("dueDate", dueDate);
-
+	 // ✨ 3. DB 쿼리에 전달할 페이징 파라미터 추가
+	    filterParams.put("offset", offset);
+	    filterParams.put("limit", pageSize);
+	    
 	    List<TaskVO> list = taskService.findAllWithFilters(filterParams);
+	 // ✨ 5. 전체 데이터 개수 조회 및 총 페이지 수 계산 (Service/Mapper에 count 쿼리 메서드 추가 필요)
+	    int totalCount = taskService.countAllWithFilters(filterParams); 
+	    int totalPages = totalCount > 0 ? (int) Math.ceil((double) totalCount / pageSize) : 0;
+
+	    // ✨ 6. 화면에 페이징 변수 전달
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("projectId", pId);
 	    model.addAttribute("loginUserCode", userCode);
 	    model.addAttribute("project", projectService.findById(String.valueOf(pId)));
@@ -306,6 +330,7 @@ public class TaskController {
 	// 전체 일감 조회 페이지 로드
 	@GetMapping("/task/all-list")
 	public String allTaskList(
+			@RequestParam(value = "page", defaultValue = "1") int page,
 	        @AuthenticationPrincipal LoginUserDetails loginUser,
 	        @RequestParam(required = false) String searchKeyword,
 	        @RequestParam(required = false) List<String> projectIds,
@@ -318,12 +343,24 @@ public class TaskController {
 	        @RequestParam(required = false) List<String> memberIds,
 	        Model model) {
 
+		// 로그인 확인
+ 		if (loginUser == null || loginUser.getLoginUser() == null) {
+ 			return "weple/access-denide";
+ 		}
+		
 	    String userCode = loginUser.getLoginUser().getUserCode();
 	    Long companyId = loginUser.getLoginUser().getCompanyId();
 
 	    Integer ownerYn = loginUser.getLoginUser().getOwnerYn();
 	    Integer adminYn = loginUser.getLoginUser().getAdminYn();
 	    
+	 
+	 		 boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
+	 // ✨ 2. 페이징 변수
+	    int pageSize = 10;
+	    int offset = (page - 1) * pageSize;
+	    System.out.println(page);
+	    System.out.println(offset);
 	    Map<String, Object> allParams = new HashMap<>();
 	    allParams.put("tManager", userCode);
 	    allParams.put("searchKeyword", searchKeyword);
@@ -335,15 +372,33 @@ public class TaskController {
 	    allParams.put("regDate", regDate);
 	    allParams.put("dueDate", dueDate);
 	    allParams.put("memberIds", memberIds);
+	    allParams.put("isAdminOrOwner", isAdminOrOwner);
+	 // ✨ 3. DB 페이징 파라미터
+	    allParams.put("offset", offset);
+	    allParams.put("limit", pageSize);
+	    allParams.put("pageSize", pageSize);
+	    
+	 // ✨ 4. 목록 조회 및 총 개수 구하기
+	    List<TaskVO> list;
+	    int totalCount = 0;
 
 	    List<TaskProjectSelectVO> projectList = taskService.findMyProject(userCode);
 	    List<TaskMemberVO> allMemberList = taskService.findAllMemberList();
 	    TaskPermissionVO taskPerms = taskService.getTaskPermissions(userCode, null);
-	    boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
+	   
+	    
+	    list = taskService.findAllMyTasksWithFilters(allParams);
+	    totalCount = taskService.countAllMyTasksWithFilters(allParams);
+	 // ✨ 5. 총 페이지 수 계산
+	    int totalPages = totalCount > 0 ? (int) Math.ceil((double) totalCount / pageSize) : 0;
+	    
 	    model.addAttribute("isAdminOrOwner", isAdminOrOwner); // 화면 제어용 변수 추가
-
+	 // ✨ 6. 화면 전달
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+	    
 	    model.addAttribute("sidebarMenu", "task");
-	    model.addAttribute("allList", taskService.findAllMyTasksWithFilters(allParams));
+	    model.addAttribute("allList", list);
 	    model.addAttribute("projectList", projectList);
 	    model.addAttribute("typeList", taskService.findType(companyId));
 	    model.addAttribute("statusList", taskService.findStatus());
@@ -354,11 +409,7 @@ public class TaskController {
 	    model.addAttribute("isAdminOrOwner" , isAdminOrOwner);
 	    
 
-	    if (isAdminOrOwner) {
-	        model.addAttribute("allList", taskService.findAllList(allParams));
-	    } else {
-	        model.addAttribute("allList", taskService.findAllMyTasksWithFilters(allParams));
-	    }
+
 	    return "weple/task/all-list";
 	}
 	
@@ -533,4 +584,52 @@ public class TaskController {
 	    // commentArea 부분만 로드
 	    return "weple/task/detail :: #commentArea";
 	}
+	
+	//  파일 다운로드
+	@GetMapping("/project/download/{versionId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable("versionId") Long versionId) {
+	    System.out.println("=== download controller ===");
+	    System.out.println("versionId = " + versionId);
+		
+        // 1. DB에서 조인된 파일 & 버전 정보 조회
+        FileDownloadDTO fileInfo = taskService.getFileForDownload(versionId);
+        System.out.println("fileInfo = " + fileInfo);
+        if (fileInfo == null) {
+            return ResponseEntity.notFound().build(); // 삭제됐거나 없는 파일
+        }
+
+        try {
+            // 2. 물리적 경로 조합
+            // FILE_PATH = "C:/weple_uploads/tasks", SAVED_NAME = "UUID_images.png" 인 경우를 고려
+            // 만약 FILE_PATH 자체에 파일명까지 전부 포함되어 있다면 Paths.get(fileInfo.getFilePath())만 사용하세요.
+            Path filePath;
+            if (fileInfo.getFilePath().endsWith(fileInfo.getSavedName())) {
+                filePath = Paths.get(fileInfo.getFilePath()); // 이미 전체 경로인 경우
+            } else {
+                filePath = Paths.get(fileInfo.getFilePath(), fileInfo.getSavedName()); // 경로 + 파일명 조합
+            }
+
+
+            Resource resource = new UrlResource(filePath.toUri());
+
+
+            if (!resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 3. LOGICAL_NAME(사용자에게 보여질 원래 이름)으로 한글 깨짐 방지 인코딩
+            String encodedFileName = UriUtils.encode(fileInfo.getLogicalName(), StandardCharsets.UTF_8);
+            String contentDisposition = "attachment; filename=\"" + encodedFileName + "\"";
+            System.out.println("download!! versionId = " + versionId);
+            // 4. 응답 객체 생성
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                    .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
+                    .body(resource);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
