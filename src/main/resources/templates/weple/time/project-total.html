@@ -87,8 +87,8 @@
 										<span class="more-options-btn" onclick="toggleDropdown(this)">•••</span>
 										<div class="dropdown-menu-box">
 											<button type="button" class="dropdown-item edit-btn"
-												th:onclick="|location.href='@{/updateProjectTime(id=${time.workId})}'|">
-												✏️ 수정</button>
+												th:onclick="|location.href='@{/updateProjectTime(workId=${time.workId})}'|">
+												✏️ 편집</button>
 											<button type="button"
 												class="dropdown-item delete-btn task-delete-trigger"
 												th:onclick="|deleteWork(${time.workId}, ${time.projectId})|">
@@ -125,21 +125,14 @@
         const menu = document.getElementById('filter-menu');
         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
-
-    // 필터 추가 시 data-col 속성을 부여하여 테이블 열과 매핑
-    // 수정된 toggleFilter 함수
+ 	
 	function toggleFilter(checkbox, colIndex) {
 	    const container = document.getElementById('search-container');
 	    if (checkbox.checked) {
 	        const div = document.createElement('div');
 	        div.className = 'search-item';
 	        div.id = 'filter-' + checkbox.value;
-	        
-	        // [수정] colIndex가 1일 때만 'date' 타입, 나머지는 'text'
-	        // 만약 '프로젝트'가 1번 인덱스라면 거꾸로 되어 있는 것이니,
-	        // colIndex === 1 인 것이 '작업일자'가 맞는지 테이블의 th 순서를 다시 확인하세요!
 	        const inputType = (colIndex === 1) ? 'date' : 'text'; 
-	        
 	        div.innerHTML = `
 	            <label style="width: 60px;">${checkbox.nextSibling.textContent.trim()}</label>
 	            <input type="${inputType}" data-col="${colIndex}" placeholder="검색어 입력" 
@@ -160,27 +153,19 @@
         }
     })
     
-    let filteredRows = []; // 현재 검색 조건에 맞는 행들을 저장할 배열
-
-	// [수정] 페이지 로딩 시 초기화
+    let filteredRows = [];
 	document.addEventListener("DOMContentLoaded", function() {
-	    filteredRows = Array.from(allRows); // 처음엔 전체 행으로 시작
+	    filteredRows = Array.from(allRows); 
 	    showPage(1);
 	});
     
 	function showPage(page) {
 	    currentPage = page;
-	    
-	    // 전체 행을 숨김
 	    allRows.forEach(row => row.style.display = "none");
-	    
-	    // 현재 페이지에 해당하는 행만 표시
 	    const start = (page - 1) * itemsPerPage;
 	    const end = start + itemsPerPage;
 	    const pageRows = filteredRows.slice(start, end);
-	    
 	    pageRows.forEach(row => row.style.display = "");
-	    
 	    updatePagination(Math.ceil(filteredRows.length / itemsPerPage));
 	}
     
@@ -189,17 +174,12 @@
 	    const inputs = document.querySelectorAll("#search-container input");
 	    const minHour = parseInt(document.querySelector("input[name='startTime']").value) || 0;
 	    const maxHour = parseInt(document.querySelector("input[name='endTime']").value) || 999;
-	    
-	    // 1. 조건에 맞는 행만 먼저 필터링
 	    filteredRows = Array.from(allRows).filter(row => {
 	        let isMatch = true;
-	        
-	        // 시간 조건 체크 (열 인덱스 7 확인)
 	        const timeCell = row.cells[7].innerText; 
 	        const hour = parseInt(timeCell.split(':')[0]);
 	        if (hour < minHour || hour > maxHour) isMatch = false;
 	        
-	        // 나머지 필터 체크
 	        inputs.forEach(input => {
 	            if (input.name === 'startTime' || input.name === 'endTime' || !input.value) return;
 	            const colIndex = parseInt(input.getAttribute('data-col')) + 1; 
@@ -210,16 +190,12 @@
 	        
 	        return isMatch;
 	    });
-	    
-	    // 2. 필터링된 결과로 1페이지 표시
 	    showPage(1);
 	}
 	
     function updatePagination(pageCount) {
 	    const pagingDiv = document.querySelector(".paging");
 	    if (pageCount === 0) pageCount = 1;
-	    
-	    // 번호 부분을 감싸는 div를 명시적으로 추가
 	    pagingDiv.innerHTML = `
 	        <button class="page-btn" onclick="showPage(Math.max(1, currentPage - 1))">&lt; 이전</button>
 	        <div id="page-numbers" style="display: flex; gap: 5px; align-items: center;"></div>
@@ -241,20 +217,14 @@
 	}
     
     function toggleDropdown(element) {
-	    // 클릭한 버튼의 부모(dropdown-wrapper) 내부에 있는 메뉴 박스를 찾음
 	    const dropdownWrapper = element.parentElement;
 	    const menuBox = dropdownWrapper.querySelector('.dropdown-menu-box');
-	    
-	    // 다른 곳을 클릭하면 닫히게 하려면 아래 '전체 닫기' 로직 추가 권장
 	    document.querySelectorAll('.dropdown-menu-box').forEach(menu => {
 	        if (menu !== menuBox) menu.classList.remove('show');
 	    });
 
-	    // 현재 메뉴 토글
 	    menuBox.classList.toggle('show');
 	}
-    
-	 	// 화면 아무 곳이나 클릭하면 열려있는 메뉴 닫기
 		window.onclick = function(event) {
 		    if (!event.target.matches('.more-options-btn')) {
 		        document.querySelectorAll('.dropdown-menu-box').forEach(menu => {
@@ -262,8 +232,6 @@
 		        });
 		    }
 		}
-    
-     // 검색 버튼 및 엔터키 이벤트 연결
         searchBtn.addEventListener("click", applySearch);
         searchInput.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
@@ -315,18 +283,7 @@
 	</script>
 		<style>
 /* =========================공통========================= */
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
 
-body {
-	font-family: "Malgun Gothic", sans-serif;
-	font-size: 14px;
-	color: #333;
-	background: #fff;
-}
 
 .worktime-container {
 	width: 95%;
