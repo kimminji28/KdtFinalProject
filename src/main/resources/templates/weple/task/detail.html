@@ -105,25 +105,26 @@
 				</div>
 
 				<div class="task-section files-area">
-    <div class="section-title">파일</div>
-    <div class="section-content">
-        <div class="file-item" th:each="file : *{fileList}">
-            <div class="file-info">
-            <span style="color:red; font-weight:bold;">버전아이디: [[${file.versionId}]]</span>
-                <a th:href="@{/project/download/{id}(id=${file.versionId})}" 
-                   class="file-link"
-                   th:text="|${file.logicalName} - version ${file.versionNumber}|"></a>
-                <span class="file-size" th:text="${file.fileSize} + ' bytes'"></span>
-            </div>
-            <span class="file-date"
-                th:text="${#dates.format(file.uploadedAt, 'yyyy.MM.dd HH:mm')}"></span>
-        </div>
+					<div class="section-title">파일</div>
+					<div class="section-content">
+						<div class="file-item" th:each="file : *{fileList}">
+							<div class="file-info">
+								<span style="color: red; font-weight: bold;">버전아이디:
+									[[${file.versionId}]]</span> <a
+									th:href="@{/project/download/{id}(id=${file.versionId})}"
+									class="file-link"
+									th:text="|${file.logicalName} - version ${file.versionNumber}|"></a>
+								<span class="file-size" th:text="${file.fileSize} + ' bytes'"></span>
+							</div>
+							<span class="file-date"
+								th:text="${#dates.format(file.uploadedAt, 'yyyy.MM.dd HH:mm')}"></span>
+						</div>
 
-        <div th:if="*{fileList == null or fileList.isEmpty()}">
-            <span id="noFileTextSpan">첨부된 파일이 없습니다.</span>
-        </div>
-    </div>
-</div>
+						<div th:if="*{fileList == null or fileList.isEmpty()}">
+							<span id="noFileTextSpan">첨부된 파일이 없습니다.</span>
+						</div>
+					</div>
+				</div>
 
 				<div class="task-section subtasks-area">
 					<div class="section-title">

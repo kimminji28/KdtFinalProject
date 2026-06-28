@@ -81,8 +81,7 @@ public class TaskController {
 	    // 관리자 권한을 가지고 있는지
 	    boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
 
-		// 🚨 [권한 체크] 프로젝트 구성원 확인
-		// (MemberVO는 실제 사용하는 타입으로 변경해주세요)
+		// 프로젝트 구성원 확인
 		List<TaskMemberVO> memberList = taskService.findMember(pId);
 		boolean isProjectMember = memberList.stream()
 				.anyMatch(member -> userCode.equals(member.getUserCode()));
@@ -91,7 +90,7 @@ public class TaskController {
 			return "weple/access-denide"; // 구성원이 아니면 접근 불가 페이지 리턴
 		}
 		
-		// ✨ 2. 페이징 계산을 위한 변수 설정
+		//페이징 계산을 위한 변수 설정
 	    int pageSize = 10; // 한 페이지에 보여줄 일감 개수
 	    int offset = (page - 1) * pageSize; // DB에서 가져올 시작 위치
 
@@ -106,16 +105,16 @@ public class TaskController {
 	    filterParams.put("progress", progress);
 	    filterParams.put("regDate", regDate);
 	    filterParams.put("dueDate", dueDate);
-	 // ✨ 3. DB 쿼리에 전달할 페이징 파라미터 추가
+	    // DB 쿼리에 전달할 페이징 파라미터 추가
 	    filterParams.put("offset", offset);
 	    filterParams.put("limit", pageSize);
 	    
 	    List<TaskVO> list = taskService.findAllWithFilters(filterParams);
-	 // ✨ 5. 전체 데이터 개수 조회 및 총 페이지 수 계산 (Service/Mapper에 count 쿼리 메서드 추가 필요)
+	    // 전체 데이터 개수 조회 및 총 페이지 수 계산 (Service/Mapper에 count 쿼리 메서드 추가 필요)
 	    int totalCount = taskService.countAllWithFilters(filterParams); 
 	    int totalPages = totalCount > 0 ? (int) Math.ceil((double) totalCount / pageSize) : 0;
 
-	    // ✨ 6. 화면에 페이징 변수 전달
+	    // 화면에 페이징 변수 전달
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("projectId", pId);
@@ -354,13 +353,15 @@ public class TaskController {
 	    Integer ownerYn = loginUser.getLoginUser().getOwnerYn();
 	    Integer adminYn = loginUser.getLoginUser().getAdminYn();
 	    
-	 
-	 		 boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
-	 // ✨ 2. 페이징 변수
+	    // 관리자 여부
+	 	boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
+	 		 
+	    // 페이징 변수
 	    int pageSize = 10;
 	    int offset = (page - 1) * pageSize;
 	    System.out.println(page);
 	    System.out.println(offset);
+	    
 	    Map<String, Object> allParams = new HashMap<>();
 	    allParams.put("tManager", userCode);
 	    allParams.put("searchKeyword", searchKeyword);
@@ -373,12 +374,12 @@ public class TaskController {
 	    allParams.put("dueDate", dueDate);
 	    allParams.put("memberIds", memberIds);
 	    allParams.put("isAdminOrOwner", isAdminOrOwner);
-	 // ✨ 3. DB 페이징 파라미터
+	    // DB 페이징 파라미터
 	    allParams.put("offset", offset);
 	    allParams.put("limit", pageSize);
 	    allParams.put("pageSize", pageSize);
 	    
-	 // ✨ 4. 목록 조회 및 총 개수 구하기
+	    // 목록 조회 및 총 개수 구하기
 	    List<TaskVO> list;
 	    int totalCount = 0;
 
@@ -389,11 +390,11 @@ public class TaskController {
 	    
 	    list = taskService.findAllMyTasksWithFilters(allParams);
 	    totalCount = taskService.countAllMyTasksWithFilters(allParams);
-	 // ✨ 5. 총 페이지 수 계산
+	    // 총 페이지 수 계산
 	    int totalPages = totalCount > 0 ? (int) Math.ceil((double) totalCount / pageSize) : 0;
 	    
 	    model.addAttribute("isAdminOrOwner", isAdminOrOwner); // 화면 제어용 변수 추가
-	 // ✨ 6. 화면 전달
+	    //  페이징 화면 전달
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalPages", totalPages);
 	    
@@ -573,8 +574,6 @@ public class TaskController {
 	    // 권한 처리를 위한 로그인 유저 코드 세팅
 	    
 	    
-	    // ⭐ 중요: 렌더링(th:if)에 필요한 권한 데이터도 Model에 반드시 추가해야 합니다!
-	    // (아래 코드는 프로젝트 구조에 맞게 데이터를 가져와서 넣어주세요)
 	    boolean isAdminOrOwner = (ownerYn != null && ownerYn == 1) || (adminYn != null && adminYn == 1);
 	    TaskPermissionVO taskPerms = taskService.getTaskPermissions(userCode, pId);
 	    
@@ -599,9 +598,7 @@ public class TaskController {
         }
 
         try {
-            // 2. 물리적 경로 조합
             // FILE_PATH = "C:/weple_uploads/tasks", SAVED_NAME = "UUID_images.png" 인 경우를 고려
-            // 만약 FILE_PATH 자체에 파일명까지 전부 포함되어 있다면 Paths.get(fileInfo.getFilePath())만 사용하세요.
             Path filePath;
             if (fileInfo.getFilePath().endsWith(fileInfo.getSavedName())) {
                 filePath = Paths.get(fileInfo.getFilePath()); // 이미 전체 경로인 경우
@@ -611,7 +608,6 @@ public class TaskController {
 
 
             Resource resource = new UrlResource(filePath.toUri());
-
 
             if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.notFound().build();

@@ -354,6 +354,7 @@ public class TaskServiceImpl implements TaskService {
 		
 		return taskMapper.allMemberList();
 	}
+	//권한 확인
 	@Override
 	public TaskPermissionVO getTaskPermissions(String userCode, Long pId) {
 		TaskPermissionVO permissions = taskMapper.checkTaskPermissions(userCode, pId);
@@ -381,8 +382,7 @@ public class TaskServiceImpl implements TaskService {
     }
     
     @Override
-    public FileDownloadDTO getFileForDownload(Long versionId) {
-    	
+    public FileDownloadDTO getFileForDownload(Long versionId) {    	
         return fileMapper.selectFileForDownload(versionId);
     }
 }

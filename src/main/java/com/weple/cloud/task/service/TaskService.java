@@ -66,5 +66,6 @@ public interface TaskService {
     // [전체 일감 - 일반 멤버용] 총 개수
     public int countAllMyTasksWithFilters(Map<String, Object> params);
     
+    // 다운로드 관련 정보
     public FileDownloadDTO getFileForDownload(Long versionId);
 }

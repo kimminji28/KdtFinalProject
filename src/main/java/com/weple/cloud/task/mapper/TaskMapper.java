@@ -73,7 +73,7 @@ public interface TaskMapper {
     //일감 관련 권한 확인
     public TaskPermissionVO checkTaskPermissions(@Param("userCode") String userCode, @Param("pId") Long pId);
     
- // [내부 일감] 총 개수
+    // [내부 일감] 총 개수
     public int countAllWithFilters(Map<String, Object> params);
 
     // [전체 일감 - 관리자/소유자용] 총 개수
