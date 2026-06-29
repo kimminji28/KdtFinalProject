@@ -18,7 +18,7 @@
         <a th:href="@{/project/{id}/setting/members(id=${setting.projectId})}"
            th:class="${activeTab == 'member'} ? 'active' : ''">구성원</a>
         <a th:href="@{/project/{id}/setting/repository(id=${setting.projectId})}"
-           th:class="${activeTab == 'repository'} ? 'active' : ''">저장소</a>
+           th:class="${activeTab == 'repository/management(projectId=${projectId})'} ? 'active' : ''">저장소</a>
         <a th:href="@{/project/{id}/setting/time(id=${setting.projectId})}"
            th:class="${activeTab == 'time'} ? 'active' : ''">시간추적</a>
     </div>
