@@ -45,8 +45,18 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     @Transactional
-    public int removeMember(String memberId, Long projectId) {
+    public int removeMember(Long memberId, Long projectId) {
         memberMapper.deleteMemberRoles(memberId);
         return memberMapper.deleteMember(memberId, projectId);
     }
+
+	@Override
+	public List<ProjectMemberVO> findGroupList() {
+		return memberMapper.selectGroupList();
+	}
+
+	@Override
+	public List<ProjectMemberVO> findUsersByGroupId(Long groupId, Long projectId) {
+		return memberMapper.selectUsersByGroupId(groupId, projectId);
+	}
 }
