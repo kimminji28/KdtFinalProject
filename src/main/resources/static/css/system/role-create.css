@@ -230,7 +230,7 @@
 
 /* 전체 버튼 */
 .group-all-btn{
-    flex:0 0 58px;
+    flex: 0 0 84px;      /* 58px → 84px: "전체 해제" 4글자가 안 잘리게 */
 
     height:30px;
 
@@ -242,6 +242,10 @@
 
     font-size:12px;
     font-weight:600;
+
+    white-space: nowrap;   /* 줄바꿈 방지 */
+    text-align: center;
+    padding: 0 4px;
 
     cursor:pointer;
     transition:.2s;

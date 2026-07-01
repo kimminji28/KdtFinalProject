@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.weple.cloud.auth.service.LoginUserDetails;
+import com.weple.cloud.project.service.ProjectMemberService;
+import com.weple.cloud.project.service.ProjectMemberVO;
 import com.weple.cloud.system.service.CodeValueService;
 import com.weple.cloud.system.service.CodeValueVO;
 import com.weple.cloud.system.service.GroupService;
@@ -460,6 +462,8 @@ public class SystemController {
 	
 	@Autowired
 	private SystemProjectService systemProjectService;
+	@Autowired
+	private ProjectMemberService projectMemberService;
 	
 	// 프로젝트 조회
 	@GetMapping("/system/project/list")
@@ -495,16 +499,30 @@ public class SystemController {
 	
 	// 프로젝트 생성
 	@GetMapping("/system/project")
-	public String projectCreateForm(Model model) {
+	public String projectCreateForm(@AuthenticationPrincipal LoginUserDetails loginUser, Model model) {
+		
+		Long companyId = loginUser.getLoginUser().getCompanyId();
+		
+		// 관리-설정(systemModules)에서 활성화한 모듈만 표시 (부모 → 자식 전달)
+	    List<SystemModuleVO> moduleList = systemModuleService.findModuleAll();
+	    List<String> enabledCodes = systemModuleService.findEnabledModuleCodes(companyId);
+	    moduleList.removeIf(m -> !enabledCodes.contains(m.getCommonId()));
 
-		model.addAttribute("sidebarMenu", "system");
-		model.addAttribute("currentMenu", "systemproject");
+	    model.addAttribute("moduleList", moduleList);
+	    model.addAttribute("defaultModules", List.of("b1", "b11")); // 개요, 설정 기본 선택
+
+	    model.addAttribute("sidebarMenu", "system");
+	    model.addAttribute("currentMenu", "systemproject");
 
 		return "weple/system/projectCreate";
 	}
 
 	@PostMapping("/system/project")
-	public String projectCreateProcess(SystemProjectVO projectVO, RedirectAttributes redirectAttributes, Model model) {
+	public String projectCreateProcess(
+			SystemProjectVO projectVO,
+			@AuthenticationPrincipal LoginUserDetails loginUser,
+			RedirectAttributes redirectAttributes,
+			Model model) {
 		 // 식별자 중복 체크
 	    if (systemProjectService.existsByIdentifier(projectVO.getProjectIdentifier())) {
 	        redirectAttributes.addFlashAttribute("toastError",
@@ -515,9 +533,26 @@ public class SystemController {
 	    // 상태 기본값 세팅
 	    projectVO.setStatus("j1");
 	    
+	    // 개요(b1), 설정(b11)은 항상 강제 포함
+	    List<String> moduleNames = projectVO.getModuleNames();
+	    if (moduleNames == null) moduleNames = new ArrayList<>();
+	    if (!moduleNames.contains("b1"))  moduleNames.add("b1");
+	    if (!moduleNames.contains("b11")) moduleNames.add("b11");
+	    projectVO.setModuleNames(moduleNames);
+	    
 	    int result = systemProjectService.createProject(projectVO);
 	    
 		if(result > 0) {
+			// ↓ 3번 항목(생성자 구성원 자동 등록)과 같이 처리
+	        Long companyId = loginUser.getLoginUser().getCompanyId();
+	        Long adminRoleId = roleService.selectRoleIdByName(companyId, "관리자");
+
+	        ProjectMemberVO creator = new ProjectMemberVO();
+	        creator.setProjectId(projectVO.getProjectId());
+	        creator.setUserCode(loginUser.getLoginUser().getUserCode());
+	        creator.setRoleId(adminRoleId);
+	        projectMemberService.addMember(creator);
+			
 			return "redirect:/system/project/list";
 		}else {
 			model.addAttribute("errorMessage", "프로젝트 생성에 실패했습니다.");
@@ -533,10 +568,20 @@ public class SystemController {
 	@GetMapping("/system/project/update/{projectId}")
 	public String projectUpdateForm(
 			@PathVariable String projectId,
+			@AuthenticationPrincipal LoginUserDetails loginUser,
 	        Model model){
 				
 				SystemProjectVO project = systemProjectService.selectProjectById(Long.parseLong(projectId));
 				
+				Long companyId = loginUser.getLoginUser().getCompanyId();
+			    List<SystemModuleVO> moduleList = systemModuleService.findModuleAll();
+			    List<String> enabledCodes = systemModuleService.findEnabledModuleCodes(companyId);
+			    moduleList.removeIf(m -> !enabledCodes.contains(m.getCommonId()));
+				
+			    model.addAttribute("moduleList", moduleList);
+			    model.addAttribute("checkedModules", project != null ? project.getModuleNames() : new ArrayList<>());
+			    model.addAttribute("defaultModules", List.of("b1", "b11"));
+			    
 				model.addAttribute("project", project);
 				model.addAttribute("sidebarMenu", "system");
 				model.addAttribute("currentMenu", "systemproject");
@@ -548,6 +593,12 @@ public class SystemController {
 	public String projectUpdateProcess(
 			SystemProjectVO projectVO,
 			RedirectAttributes redirectAttributes) {
+		
+		List<String> moduleNames = projectVO.getModuleNames();
+	    if (moduleNames == null) moduleNames = new ArrayList<>();
+	    if (!moduleNames.contains("b1"))  moduleNames.add("b1");
+	    if (!moduleNames.contains("b11")) moduleNames.add("b11");
+	    projectVO.setModuleNames(moduleNames);
 		
 		int result = systemProjectService.updateProject(projectVO);
 		
