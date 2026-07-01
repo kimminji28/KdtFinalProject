@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.weple.cloud.auth.service.LoginUserDetails;
+import com.weple.cloud.project.service.ProjectService;
 import com.weple.cloud.task.service.TaskMemberVO;
 import com.weple.cloud.task.service.TaskParentVO;
 import com.weple.cloud.task.service.TaskService;
@@ -31,6 +32,7 @@ public class TestCaseController {
 	
 	private final TestCaseService testCaseService;
 	private final TaskService taskService;
+	private final ProjectService projectService;
 
 	// 테스트케이스 리스트 목록
 	@GetMapping("/project/testcase")
@@ -88,7 +90,8 @@ public class TestCaseController {
 	    // 기타 공통 데이터
 	    model.addAttribute("currentMenu", "testcase");
 	    model.addAttribute("projectId", pId); 
-	    model.addAttribute("currentTab", "testcase"); 
+	    model.addAttribute("currentTab", "testcase");
+	    model.addAttribute("project", projectService.findById(String.valueOf(pId)));
 
 	    return "weple/testcase/list";
 	}
@@ -148,6 +151,7 @@ public class TestCaseController {
         model.addAttribute("currentMenu", "testcase"); 
         model.addAttribute("projectId", pId);
         model.addAttribute("currentTab", "coverage");
+        model.addAttribute("project", projectService.findById(String.valueOf(pId)));
         return "weple/testcase/list";
     }
     
@@ -184,6 +188,7 @@ public class TestCaseController {
     	model.addAttribute("statusList",statusList);
     	model.addAttribute("taskList",taskList);
     	model.addAttribute("priorityList",priorityList);
+    	model.addAttribute("project", projectService.findById(String.valueOf(pId)));
     	
     	return "weple/testcase/register";
     }
@@ -239,6 +244,7 @@ public class TestCaseController {
     public String testCaseDetail(@RequestParam("projectId") Long projectId,
             					@RequestParam("testId") String testId, 
             					Model model,
+            					@RequestParam("projectId") Long pId,
             					@AuthenticationPrincipal LoginUserDetails loginUser) {
     	
     	if (loginUser == null || loginUser.getLoginUser() == null) {
@@ -264,6 +270,7 @@ public class TestCaseController {
     	model.addAttribute("projectId", projectId);
         model.addAttribute("testId", testId);
         model.addAttribute("currentMenu", "testcase");
+        model.addAttribute("project", projectService.findById(String.valueOf(pId)));
     	
     	return "weple/testcase/detail";
     }
@@ -313,6 +320,7 @@ public class TestCaseController {
         model.addAttribute("statusList", statusList);
         model.addAttribute("taskList", taskList);
         model.addAttribute("priorityList", priorityList);
+        model.addAttribute("project", projectService.findById(String.valueOf(pId)));
         
         return "weple/testcase/update"; // update.html 화면 렌더링
     }

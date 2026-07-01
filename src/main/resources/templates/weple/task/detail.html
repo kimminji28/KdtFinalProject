@@ -138,11 +138,31 @@
 
 							<span id="childTaskArrow">↳</span> <a id="childTaskName"
 								th:href="@{/project/task/detail/{id}(id=${sub.taskId}, projectId=${projectId})}"
-								th:text="${sub.taskTitle}"> 하위 일감 제목 </a>
+								th:text="${sub.taskTitle}"> </a>
 						</div>
 
 						<div id="noChildTask" th:if="${#lists.isEmpty(chlidTaskList)}">
 							등록된 하위 일감이 존재하지 않습니다.</div>
+					</div>
+				</div>
+				<div class="task-section subtasks-area">
+					<div class="section-title">
+						<span>테스트 케이스</span>
+					</div>
+
+					<div class="section-content">
+						<div th:each="sub : ${taskTestCaseList}"
+							style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+
+							<span id="childTaskArrow">↳</span> 
+ 							<a id="childTaskName"
+   								th:href="@{/project/testcase/detail(projectId=${projectId}, testId=${sub.testId})}"
+   								th:text="${sub.testName}">
+							</a>
+						</div>
+
+						<div id="noChildTask" th:if="${#lists.isEmpty(taskTestCaseList)}">
+							등록된 테스트케이스가 존재하지 않습니다.</div>
 					</div>
 				</div>
 

@@ -1,7 +1,6 @@
 package com.weple.cloud.task.web;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -38,6 +37,7 @@ import com.weple.cloud.task.service.TaskPermissionVO;
 import com.weple.cloud.task.service.TaskProjectSelectVO;
 import com.weple.cloud.task.service.TaskService;
 import com.weple.cloud.task.service.TaskSpentTimeVO;
+import com.weple.cloud.task.service.TaskTestCaseDTO;
 import com.weple.cloud.task.service.TaskVO;
 
 import lombok.RequiredArgsConstructor;
@@ -258,6 +258,7 @@ public class TaskController {
 		}
 		TaskPermissionVO taskPerms = taskService.getTaskPermissions(userCode, pId);
 		TaskVO taskDetail = taskService.findTaskDetail(tId);
+		List<TaskTestCaseDTO> taskTestCase = taskService.findTestCase(tId, pId);
 		List<TaskCommentVO> taskComment = taskService.findTaskComment(tId);
 		List<TaskVO> childTaskList = taskService.findChildTask(tId);
 		List<TaskHistoryDTO> updateHistoryList = taskService.taskUpdateHistory(tId);
@@ -273,6 +274,7 @@ public class TaskController {
 		model.addAttribute("projectId", pId);
 		model.addAttribute("taskDetail", taskDetail);
 		model.addAttribute("chlidTaskList", childTaskList);
+		model.addAttribute("taskTestCaseList",taskTestCase);
 		model.addAttribute("taskComment", taskComment);
 		model.addAttribute("updateHistoryList", updateHistoryList);
 		model.addAttribute("spentTimeList", spentTimeList);
