@@ -131,15 +131,20 @@ public class ProjectMemberController {
     @PostMapping("/project/settings/members/add")
     @ResponseBody
     public ResponseEntity<String> addMember(
-    		@AuthenticationPrincipal LoginUserDetails loginUser,
+            @AuthenticationPrincipal LoginUserDetails loginUser,
             @RequestParam Long projectId,
             @RequestParam String userCode,
             @RequestParam Long roleId) {
-    	
-    	 Set<String> perms = findMemberPermissions(loginUser, projectId);
-         if (!hasPerm(perms, PERM_MEMBER)) {
-             return ResponseEntity.status(403).body("구성원 관리 권한이 없습니다.");
-         }
+
+        Set<String> perms = findMemberPermissions(loginUser, projectId);
+        if (!hasPerm(perms, PERM_MEMBER)) {
+            return ResponseEntity.status(403).body("구성원 관리 권한이 없습니다.");
+        }
+
+        // 이미 참여 중인 구성원이면 역할이 바뀌지 않도록 그대로 건너뜀 (신규 추가만 허용)
+        if (memberService.isMember(userCode, projectId)) {
+            return ResponseEntity.ok("already");
+        }
 
         ProjectMemberVO vo = new ProjectMemberVO();
         vo.setProjectId(projectId);
@@ -151,7 +156,7 @@ public class ProjectMemberController {
             // 알림-은지(프로젝트 초대)
             ProjectVO project = projectService.findById(String.valueOf(projectId));
             String projectTitle = (project != null) ? project.getProjectTitle() : "프로젝트";
-            
+
             notificationService.create(
                     userCode,
                     AlarmType.TAG_PROJECT_INVITE,
@@ -159,12 +164,34 @@ public class ProjectMemberController {
                     AlarmType.TARGET_PROJECT,
                     String.valueOf(projectId)
                 );
-            
+
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+    
+	//  구성원 역할 변경 (기존 구성원 대상, member_id는 그대로 유지)
+	@PostMapping("/project/settings/members/updateRole")
+	@ResponseBody
+	public ResponseEntity<String> updateMemberRole(
+	        @AuthenticationPrincipal LoginUserDetails loginUser,
+	        @RequestParam Long memberId,
+	        @RequestParam Long projectId,
+	        @RequestParam(required = false) Long roleId) {
+	
+	    Set<String> perms = findMemberPermissions(loginUser, projectId);
+	    if (!hasPerm(perms, PERM_MEMBER)) {
+	        return ResponseEntity.status(403).body("구성원 관리 권한이 없습니다.");
+	    }
+	
+	    try {
+	        memberService.updateMemberRole(memberId, roleId);
+	        return ResponseEntity.ok("ok");
+	    } catch (Exception e) {
+	        return ResponseEntity.status(500).body(e.getMessage());
+	    }
+	}
 
     //  구성원 삭제
     @PostMapping("/project/settings/members/delete")

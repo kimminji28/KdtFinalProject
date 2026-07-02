@@ -118,6 +118,11 @@
                            th:checked="${typeNames != null and #lists.contains(typeNames, '피드백')}">
                     <span class="custom-check-box"></span> 피드백
                 </label>
+                <label class="checkbox-inline">
+			        <input type="checkbox" name="typeNames" value="위키"
+			               th:checked="${typeNames != null and #lists.contains(typeNames, '위키')}">
+			        <span class="custom-check-box"></span> 위키
+			    </label>
             </div>
         </form>
 
@@ -146,7 +151,7 @@
                                 <th>등록일시</th>
                                 <th>프로젝트</th>
                                 <th>사용자</th>
-                                <th>일감</th>
+                                <th>제목</th>
                                 <th>일감유형</th>
                                 <th>작업유형</th>
                             </tr>
@@ -157,30 +162,36 @@
                                 <!-- ★ 프로젝트명 링크 → 프로젝트 개요 -->
                                 <td>
                                     <a th:if="${log.projectId != null}"
-                                       th:href="@{/project/overview(projectId=${log.projectId})}"
-                                       class="table-link"
-                                       th:text="${log.projectTitle}">
-                                    </a>
+									   th:href="@{/project/outline(projectId=${log.projectId})}"
+									   class="table-link"
+									   th:text="${log.projectTitle}">
+									</a>
                                     <span th:if="${log.projectId == null}" th:text="${log.projectTitle}"></span>
                                 </td>
                                 <td th:text="${log.userName}"></td>
                                 <!-- ★ 일감명 링크 → 일감 상세 -->
-                                <td class="text-left">
-                                    <a th:if="${log.taskId != null and log.projectId != null}"
-                                       th:href="@{/project/task/detail/{tId}(tId=${log.taskId}, projectId=${log.projectId})}"
-                                       class="table-link"
-                                       th:text="${log.taskTitle}">
-                                    </a>
-                                    <span th:if="${log.taskId == null or log.projectId == null}" th:text="${log.taskTitle}"></span>
-                                </td>
+                               <td class="text-left">
+								    <a th:if="${log.typeName == '위키' and log.taskId != null and log.projectId != null}"
+								       th:href="@{/project/wiki(projectId=${log.projectId}, wikiPageId=${log.taskId})}"
+								       class="table-link"
+								       th:text="${log.taskTitle}">
+								    </a>
+								    <a th:if="${log.typeName != '위키' and log.taskId != null and log.projectId != null}"
+								       th:href="@{/project/task/detail/{tId}(tId=${log.taskId}, projectId=${log.projectId})}"
+								       class="table-link"
+								       th:text="${log.taskTitle}">
+								    </a>
+								    <span th:if="${log.taskId == null or log.projectId == null}" th:text="${log.taskTitle}"></span>
+								</td>
                                 <td>
-                                    <span th:if="${log.typeName == '기획'}" class="status-badge type-dev" th:text="${log.typeName}"></span>
-                                    <span th:if="${log.typeName == '새 기능'}" class="status-badge type-bug" th:text="${log.typeName}"></span>
-                                    <span th:if="${log.typeName == '개선'}" class="status-badge type-support" th:text="${log.typeName}"></span>
-                                    <span th:if="${log.typeName == '피드백'}" class="status-badge type-improve" th:text="${log.typeName}"></span>
-                                    <span th:if="${log.typeName != '기획' and log.typeName != '새 기능' and log.typeName != '개선' and log.typeName != '피드백'}"
-                                          class="status-badge type-default" th:text="${log.typeName}"></span>
-                                </td>
+								    <span th:if="${log.typeName == '기획'}" class="status-badge type-dev" th:text="${log.typeName}"></span>
+								    <span th:if="${log.typeName == '새 기능'}" class="status-badge type-bug" th:text="${log.typeName}"></span>
+								    <span th:if="${log.typeName == '개선'}" class="status-badge type-support" th:text="${log.typeName}"></span>
+								    <span th:if="${log.typeName == '피드백'}" class="status-badge type-improve" th:text="${log.typeName}"></span>
+								    <span th:if="${log.typeName == '위키'}" class="status-badge type-wiki" th:text="${log.typeName}"></span>
+								    <span th:if="${log.typeName != '기획' and log.typeName != '새 기능' and log.typeName != '개선' and log.typeName != '피드백' and log.typeName != '위키'}"
+								          class="status-badge type-default" th:text="${log.typeName}"></span>
+								</td>
                                 <td>
                                     <span th:if="${log.actionType == 'CREATE'}" class="action-badge action-create">CREATE</span>
                                     <span th:if="${log.actionType == 'UPDATE'}" class="action-badge action-update">UPDATE</span>

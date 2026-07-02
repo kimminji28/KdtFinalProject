@@ -69,9 +69,22 @@
 		                </div>
 		            </td>
 		
-		            <td class="col-role"
-		                th:text="${m.roleName != null ? m.roleName : '-'}">
-		            </td>
+		            <td class="col-role">
+					    <select th:if="${canManageMember}"
+					            class="role-select"
+					            th:attr="data-member-id=${m.memberId}"
+					            onchange="updateMemberRole(this)">
+					        <option value="">역할 없음</option>
+					        <option th:each="role : ${roleList}"
+					                th:value="${role.roleId}"
+					                th:text="${role.roleName}"
+					                th:selected="${role.roleId == m.roleId}">
+					        </option>
+					    </select>
+					    <span th:unless="${canManageMember}"
+					          th:text="${m.roleName != null ? m.roleName : '-'}">
+					    </span>
+					</td>
 		        </tr>
 		        </tbody>
 		    </table>
@@ -80,16 +93,16 @@
         <!-- 구성원 추가 버튼: 우측 하단 -->
         <div class="members-add-wrap">
 		    <button th:if="${canManageMember}"
-		            type="button" class="btn-add-member" onclick="openAddModal()">
-		        구성원 추가
-		    </button>
+			        type="button" class="btn-add-member" onclick="openAddModal()">
+			    구성원 관리
+			</button>
 		</div>
 
     <!-- ══ 구성원 추가 모달 ══ -->
     <div id="addMemberModal" class="modal-overlay" style="display:none;">
         <div class="modal-box">
             <div class="modal-header">
-                <span class="modal-title">구성원 추가</span>
+                <span class="modal-title">구성원 관리</span>
                 <button type="button" class="modal-close-btn" onclick="closeAddModal()">✕</button>
             </div>
             <div class="modal-body">
@@ -139,7 +152,10 @@
                 </div>
 
                 <!-- 역할 (공통) -->
-                <div class="modal-label" style="margin-top:16px;">역할</div>
+                <div class="modal-label-row" style="margin-top:16px;">
+				    <span class="modal-label" style="margin-bottom:0;">역할</span>
+				    <span class="modal-role-hint">새로 추가되는 구성원에게만 적용돼요</span>
+				</div>
                 <div class="modal-role-grid">
                     <label th:each="role : ${roleList}" class="chip-item chip-radio chip-role">
                         <input type="radio" name="selectedRole" th:value="${role.roleId}">
@@ -149,7 +165,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="modal-btn btn-cancel" onclick="closeAddModal()">취소</button>
-                <button type="button" class="modal-btn btn-submit" onclick="submitAddMember()">등록</button>
+                <button type="button" class="modal-btn btn-submit" onclick="submitAddMember()">저장</button>
             </div>
         </div>
     </div>
@@ -306,7 +322,7 @@
 
         /* ══ 그룹 내 사용자 전체 선택/해제 ══ */
         function toggleAllGroupUsers() {
-            var checks = document.querySelectorAll('#groupUserListWrap input[name="selectedGroupUser"]:not(:disabled)');
+        	var checks = document.querySelectorAll('#groupUserListWrap input[name="selectedGroupUser"]');
             if (!checks.length) return;
             var allChecked = Array.prototype.every.call(checks, function(c){ return c.checked; });
             checks.forEach(function(c){ c.checked = !allChecked; });
@@ -319,48 +335,79 @@
             wrap.innerHTML = list.map(function(u) {
                 var img = showAvatar ? '<img src="' + (u.profileImage||'/images/default-profile.svg') + '" class="chip-avatar" onerror="this.src=\'/images/default-profile.svg\'">' : '';
                 var already = u.isAlreadyMember === true || u.isAlreadyMember === 1;
-                var checkedAttr = already ? 'checked disabled' : '';
-                var extraClass  = already ? ' chip-already' : '';
+                var checkedAttr  = already ? 'checked' : '';
+                var extraClass   = already ? ' chip-already' : '';
+                var memberIdAttr = u.memberId != null ? u.memberId : '';
                 return '<label class="chip-item chip-check' + extraClass + '">'
-                    + '<input type="checkbox" name="' + name + '" value="' + u.userCode + '" ' + checkedAttr + '>'
-                    + img + '<span>' + u.userName + '</span></label>';
+                + '<input type="checkbox" name="' + name + '" value="' + u.userCode + '" '
+                + checkedAttr + ' data-already="' + (already ? '1' : '0') + '" data-member-id="' + memberIdAttr + '">'
+                + img + '<span>' + u.userName + (already && u.roleName ? ' <small style="opacity:.6">('+u.roleName+')</small>' : '') + '</span></label>';
             }).join('');
         }
-
+        
         /* ══ 등록 ══ */
         function submitAddMember() {
-            var roleInput = document.querySelector('input[name="selectedRole"]:checked');
-            if (!roleInput) { showToast('warning', '역할을 선택해주세요.'); return; }
-
-            var userCodes = [];
-            if (currentTab === 'user') {
-                document.querySelectorAll('#userListWrap input[name="selectedUser"]:checked:not(:disabled)')
-                    .forEach(function(cb){ userCodes.push(cb.value); });
-            } else {
-                document.querySelectorAll('#groupUserListWrap input[name="selectedGroupUser"]:checked:not(:disabled)')
-                    .forEach(function(cb){ userCodes.push(cb.value); });
-            }
-            if (!userCodes.length) { showToast('warning', '추가할 사용자를 선택해주세요.'); return; }
-
-            var headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-            headers[csrfHeader] = csrfToken;
-            var chain = Promise.resolve();
-            userCodes.forEach(function(code) {
-                chain = chain.then(function() {
-                    var p = new URLSearchParams();
-                    p.append('projectId', String(projectId));
-                    p.append('userCode', code);
-                    p.append('roleId', roleInput.value);
-                    return fetch('/project/settings/members/add', { method:'POST', headers:headers, body:p.toString() })
-                        .then(function(r){ if (!r.ok) throw new Error(); });
-                });
-            });
-            chain.then(function() {
-                showToast('success', '구성원이 추가되었습니다.');
-                closeAddModal();
-                setTimeout(function(){ location.reload(); }, 800);
-            }).catch(function(){ showToast('error', '구성원 추가 중 오류가 발생했습니다.'); });
-        }
+	    var roleInput = document.querySelector('input[name="selectedRole"]:checked');
+	
+	    var checkboxSelector = currentTab === 'user'
+	        ? '#userListWrap input[name="selectedUser"]'
+	        : '#groupUserListWrap input[name="selectedGroupUser"]';
+	
+	    var toAdd = [];
+	    var toRemove = [];
+	
+	    document.querySelectorAll(checkboxSelector).forEach(function(cb) {
+	        var wasAlready = cb.getAttribute('data-already') === '1';
+	        var isChecked  = cb.checked;
+	
+	        if (isChecked && !wasAlready) {
+	            toAdd.push(cb.value);
+	        } else if (!isChecked && wasAlready) {
+	            toRemove.push({ memberId: cb.getAttribute('data-member-id') });
+	        }
+	        // 체크 유지 or 미체크 유지 → 아무 것도 안 함 (member_id 그대로 보존)
+	    });
+	
+	    if (!toAdd.length && !toRemove.length) {
+	        showToast('warning', '변경된 내용이 없습니다.');
+	        return;
+	    }
+	    if (toAdd.length && !roleInput) {
+	        showToast('warning', '새로 추가할 구성원의 역할을 선택해주세요.');
+	        return;
+	    }
+	
+	    var headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+	    headers[csrfHeader] = csrfToken;
+	    var chain = Promise.resolve();
+	
+	    toAdd.forEach(function(code) {
+	        chain = chain.then(function() {
+	            var p = new URLSearchParams();
+	            p.append('projectId', String(projectId));
+	            p.append('userCode', code);
+	            p.append('roleId', roleInput.value);
+	            return fetch('/project/settings/members/add', { method:'POST', headers:headers, body:p.toString() })
+	                .then(function(r){ if (!r.ok) throw new Error(); });
+	        });
+	    });
+	
+	    toRemove.forEach(function(t) {
+	        chain = chain.then(function() {
+	            var p = new URLSearchParams();
+	            p.append('memberId', t.memberId);
+	            p.append('projectId', String(projectId));
+	            return fetch('/project/settings/members/delete', { method:'POST', headers:headers, body:p.toString() })
+	                .then(function(r){ if (!r.ok) throw new Error(); });
+	        });
+	    });
+	
+	    chain.then(function() {
+	        showToast('success', '구성원 정보가 저장되었습니다.');
+	        closeAddModal();
+	        setTimeout(function(){ location.reload(); }, 800);
+	    }).catch(function(){ showToast('error', '저장 중 오류가 발생했습니다.'); });
+	}
 
         /* ══ 외부 클릭 닫기 ══ */
         document.addEventListener('click', function(e) {
@@ -368,6 +415,23 @@
             if (e.target.id === 'deleteConfirmModal') closeDeleteModal();
         });
         /*]]>*/
+        
+        function updateMemberRole(sel) {
+	    var memberId = sel.getAttribute('data-member-id');
+	    var roleId   = sel.value;
+	
+	    var headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+	    headers[csrfHeader] = csrfToken;
+	    var p = new URLSearchParams();
+	    p.append('memberId', memberId);
+	    p.append('projectId', String(projectId));
+	    p.append('roleId', roleId);
+	
+	    fetch('/project/settings/members/updateRole', { method:'POST', headers:headers, body:p.toString() })
+	        .then(function(r){ if (!r.ok) throw new Error(); return r.text(); })
+	        .then(function(){ showToast('success', '역할이 변경되었습니다.'); })
+	        .catch(function(){ showToast('error', '역할 변경 중 오류가 발생했습니다.'); });
+	}
     </script>
 </section>
 </body>
