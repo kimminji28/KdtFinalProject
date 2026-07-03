@@ -9,5 +9,7 @@ public interface TestCaseRepository extends JpaRepository<TestCase, String> {
 
     // 테스트케이스 삭제
 	void deleteByTestIdAndProjectId(String testId, Long projectId);
+	
+	
 
 }

@@ -1,6 +1,7 @@
 package com.weple.cloud.testcase.web;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -236,7 +237,7 @@ public class TestCaseController {
         vo.setProjectId(pId); 
 
         // 서비스 호출 (insert 실행)
-        testCaseService.insetTestCaseService(vo);
+        testCaseService.insertTestCaseService(vo);
 
         // 등록 완료 후 목록 페이지로 리다이렉트 (경로는 상황에 맞게 수정하세요)
         return "redirect:/project/testcase?projectId=" + pId; 

@@ -48,7 +48,7 @@ public class TestCaseServiceImpl implements TestCaseService{
 	}
 
 	@Override
-	public int insetTestCaseService(TestCaseVO TestCaseVO) {
+	public int insertTestCaseService(TestCaseVO TestCaseVO) {
 		return testCaseMapper.insertTestCase(TestCaseVO);
 	}
 

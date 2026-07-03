@@ -274,6 +274,7 @@ public class TaskServiceImpl implements TaskService {
 	//댓글 목록 조회
 	@Override
 	public List<TaskCommentVO>findTaskComment(String tId) {
+		System.out.println("서비스임플" + taskMapper.taskCommentList(tId));
 		return taskMapper.taskCommentList(tId);
 	}
 	//댓글 등록
