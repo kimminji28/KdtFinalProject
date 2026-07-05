@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.weple.cloud.dashboard.mapper.DashboardMapper;
+import com.weple.cloud.dashboard.service.DashboardProjectDTO;
 import com.weple.cloud.dashboard.service.DashboardService;
 import com.weple.cloud.history.worklog.service.WorkLogVO;
 import com.weple.cloud.project.service.ProjectService;
@@ -29,9 +30,11 @@ public class DashboardServiceImpl implements DashboardService {
     }
     
     @Override
-    public List<ProjectVO> getProjectsByMember(String userCode) {
-    	return dashboardMapper.selectProjectsByMember(userCode);
+    public List<DashboardProjectDTO> getProjectsByMember(String userCode) {
+        return dashboardMapper.selectProjectsByMember(userCode);
     }
+    
+    
     
     @Override
     public List<WorkLogVO> getRecentActivities(String userCode, String projectId) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.weple.cloud.dashboard.mapper.DashboardMapper"> <select id="selectTasksDueWithinAWeek" resultType="TaskVO">
+<mapper namespace="com.weple.cloud.dashboard.mapper.DashboardMapper"> 
+<select id="selectTasksDueWithinAWeek" resultType="TaskVO">
         SELECT
             t.task_id AS taskId, 
             p.project_title AS projectTitle, 
@@ -24,7 +25,7 @@
           ORDER BY t.finish_date ASC
     </select>
     
-    <select id="selectProjectsByMember" resultType="ProjectVO">
+    <select id="selectProjectsByMember" resultType="DashboardProjectDTO">
         SELECT 
             p.project_id          AS projectId,
             p.project_title       AS projectTitle,

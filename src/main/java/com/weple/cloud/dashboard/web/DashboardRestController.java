@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.weple.cloud.auth.service.LoginUserDetails;
+import com.weple.cloud.dashboard.service.DashboardProjectDTO;
 import com.weple.cloud.dashboard.service.DashboardService;
 import com.weple.cloud.history.worklog.service.WorkLogVO;
-import com.weple.cloud.project.service.ProjectVO;
 import com.weple.cloud.task.service.TaskVO;
 
 import lombok.RequiredArgsConstructor;
@@ -39,9 +39,8 @@ public class DashboardRestController {
     public ResponseEntity<?> getMyProjects(@AuthenticationPrincipal LoginUserDetails loginUser) {
         String userCode = loginUser.getLoginUser().getUserCode();
         
-        // 이전에 매퍼(selectAllByMember) 뼈대를 주셨던 로직을 서비스 레이어를 통해 호출합니다.
-        // TIP: 이미지처럼 진척도(%)나 Task 개수를 표현하기 위해 ProjectVO에 관련 필드가 추가되어 있으면 좋습니다.
-        List<ProjectVO> projects = dashboardService.getProjectsByMember(userCode);
+        // 반환 타입을 DTO로 수신
+        List<DashboardProjectDTO> projects = dashboardService.getProjectsByMember(userCode);
         
         return ResponseEntity.ok(projects);
     }

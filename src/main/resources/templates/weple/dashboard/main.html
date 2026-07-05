@@ -414,7 +414,7 @@
              const themeClass = colorThemes[index % colorThemes.length];
 
              html += `
-                 <a href="/project/detail/${project.projectId}" class="project-item-card">
+                 <a th:href="@{/project/outline(projectId=${project.projectId})}" class="project-item-card">
                      <div class="project-info-top">
                          <h4>${escapeHtml(project.projectTitle)}</h4>
                          <p>${escapeHtml(project.projectDescribe || '설명이 등록되지 않은 프로젝트입니다.')}</p>
