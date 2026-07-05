@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.weple.cloud.auth.service.LoginUserDetails;
 import com.weple.cloud.dashboard.service.DashboardService;
+import com.weple.cloud.history.worklog.service.WorkLogVO;
 import com.weple.cloud.project.service.ProjectVO;
 import com.weple.cloud.task.service.TaskVO;
 
@@ -42,6 +44,18 @@ public class DashboardRestController {
         List<ProjectVO> projects = dashboardService.getProjectsByMember(userCode);
         
         return ResponseEntity.ok(projects);
+    }
+    
+ // 최근 활동 내역 가져오기 API
+    @GetMapping("/recent-activities")
+    public ResponseEntity<?> getRecentActivities(
+            @AuthenticationPrincipal LoginUserDetails loginUser,
+            @RequestParam(required = false) String projectId) {
+        
+        String userCode = loginUser.getLoginUser().getUserCode();
+        List<WorkLogVO> activities = dashboardService.getRecentActivities(userCode, projectId);
+        
+        return ResponseEntity.ok(activities);
     }
 }
 

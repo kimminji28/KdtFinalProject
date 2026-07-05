@@ -15,18 +15,20 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
         
-        /* image_1c72de.png 기준 3단 메인 그리드 레이아웃 */
+        /* 대시보드 상/하 구조 컨테이너 */
         .dashboard-container {
-            display: grid;
-            grid-template-columns: 3fr 1fr 1fr;
-            gap: 24px;
-            padding: 24px;
-        }
-
-        /* 메인 섹션들 (좌측 수직 정렬 공간) */
-        .main-column {
             display: flex;
             flex-direction: column;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1600px; /* 대화면에서 너무 퍼지지 않도록 제한 */
+            margin: 0 auto;
+        }
+
+        /* 하단 피드 영역: 대량의 데이터 처리를 위해 5:5 비율로 분할 */
+        .bottom-feed-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 24px;
         }
 
@@ -37,6 +39,8 @@
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
             padding: 24px;
+            display: flex;
+            flex-direction: column;
         }
 
         .card-header-title {
@@ -48,105 +52,113 @@
             align-items: center;
             justify-content: space-between;
         }
+
+        /* [핵심] 대량 데이터용 스크롤 가능한 카드 바디 */
+        .scrollable-body {
+            max-height: 400px; /* 적절한 높이 제한 */
+            overflow-y: auto;  /* 데이터가 넘칠 때만 스크롤바 표시 */
+            padding-right: 8px;
+        }
+
+        /* 스크롤바 커스텀 (디자인을 해치지 않는 슬림한 스타일) */
+        .scrollable-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-body::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .scrollable-body::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .scrollable-body::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
         
+        /* 프로젝트 그리드 스타일 */
         .project-card-grid {
-    display: grid;
-    /* 카드가 화면 너비에 따라 자동으로 줄바꿈되며 유연하게 늘어나는 구조 */
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-}
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
 
-.project-item-card {
-    background: #ffffff;
-    border: 1px solid #eef2f5;
-    border-radius: 14px;
-    padding: 20px;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    color: inherit;
-}
+        .project-item-card {
+            background: #ffffff;
+            border: 1px solid #eef2f5;
+            border-radius: 14px;
+            padding: 20px;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
 
-/* 마우스 호버 시 부드럽게 위로 뜨는 효과 */
-.project-item-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-}
+        .project-item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        }
 
-/* 프로젝트 상단 정보 (제목 & 설명) */
-.project-info-top h4 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0 0 6px 0;
-}
+        .project-info-top h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 6px 0;
+        }
 
-.project-info-top p {
-    font-size: 0.85rem;
-    color: #94a3b8;
-    margin: 0;
-    line-height: 1.4;
-    /* 설명이 너무 길어지면 2줄 처리 후 말줄임표(...) 제한 */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+        .project-info-top p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-/* ==========================================================================
-   [프로젝트 모듈] 하단 진척도(Progress Bar) 스타일
-   ========================================================================== */
-.project-progress-section {
-    margin-top: 20px;
-}
+        .project-progress-section {
+            margin-top: 20px;
+        }
 
-.progress-bar-container {
-    width: 100%;
-    height: 6px;
-    background-color: #f1f5f9;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 8px;
-}
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
 
-.progress-bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    width: 0%; /* JavaScript에서 동적으로 fill 제어 */
-    transition: width 0.5s ease-in-out;
-}
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            width: 0%; 
+            transition: width 0.5s ease-in-out;
+        }
 
-/* 대시보드 시안 맞춤형 테마 컬러 (스크립트에서 순환 적용) */
-.bg-blue   { background-color: #4e73df; }
-.bg-orange { background-color: #f6c23e; }
-.bg-green  { background-color: #1cc88a; }
-.bg-gray   { background-color: #beabc2; }
+        .bg-blue   { background-color: #4e73df; }
+        .bg-orange { background-color: #f6c23e; }
+        .bg-green  { background-color: #1cc88a; }
+        .bg-gray   { background-color: #beabc2; }
 
-/* 프로그레스 바 하단 텍스트 영역 (완료 개수 & 백분율) */
-.progress-txt-container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: #94a3b8;
-}
+        .progress-txt-container {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
 
-.progress-count { 
-    font-weight: 500; 
-}
+        .progress-count { font-weight: 500; }
+        .progress-percent { font-weight: 700; color: #4e73df; }
 
-.progress-percent { 
-    font-weight: 700; 
-    color: #4e73df; 
-}
-
-        /* 마감 임박 카드 컴포넌트 스타일 (image_1c72de.png 반영) */
+        /* 마감 임박 카드 컴포넌트 테마 */
         .upcoming-box {
-            border: 1px solid #ffebe9; /* 부드러운 붉은 톤 외곽선 */
-            background-color: #ffffff;
+            border-top: 3px solid #f43f5e; /* 상단 포인트 선으로 강조 */
         }
         
         .task-card-list {
@@ -159,11 +171,11 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 16px;
+            padding: 14px 16px;
             background: #ffffff;
             border: 1px solid #f1f5f9;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
             transition: transform 0.2s, box-shadow 0.2s;
             text-decoration: none;
             color: inherit;
@@ -171,24 +183,23 @@
 
         .task-item-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
 
-        /* D-Day 배지 스타일링 */
         .dday-badge {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            flex-shrink: 0;
         }
-        /* 임박도에 따른 배지 색상 정의 */
-        .badge-danger { background-color: #fff1f2; color: #f43f5e; }  /* D-1 ~ D-2 */
-        .badge-warning { background-color: #fffbeb; color: #d97706; } /* D-3 ~ D-5 */
-        .badge-info { background-color: #eff6ff; color: #2563eb; }    /* D-6 ~ */
+        .badge-danger { background-color: #fff1f2; color: #f43f5e; }  
+        .badge-warning { background-color: #fffbeb; color: #d97706; } 
+        .badge-info { background-color: #eff6ff; color: #2563eb; }    
 
         .task-card-info {
             display: flex;
@@ -207,23 +218,110 @@
             color: #94a3b8;
         }
 
-        /* 스켈레톤/로딩 및 데이터 없음 공통 스타일 */
         .loading-spinner, .empty-msg {
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0;
             color: #94a3b8;
             font-size: 0.9rem;
         }
+        
+        /* 반응형 모바일 대응: 하단 피드 영역을 1열로 전환 */
+        @media (max-width: 992px) {
+            .bottom-feed-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 최근 활동 전용 드롭다운 스타일 */
+.card-header-select {
+    padding: 6px 32px 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    cursor: pointer;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 1.25rem;
+    appearance: none;
+    transition: border-color 0.2s;
+}
+.card-header-select:focus {
+    border-color: #94a3b8;
+}
+
+/* 수직 타임라인 레이아웃 구조 */
+.timeline-container {
+    position: relative;
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 타임라인 가로수직 기둥 선 */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background-color: #f1f5f9;
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 이미지 모사 액션별 파스텔톤 컬러 서클 마커 */
+.timeline-marker {
+    position: absolute;
+    left: -32px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 2px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.marker-create { border-color: #bfdbfe; background-color: #eff6ff; } /* 일감 생성 - 블루 */
+.marker-update { border-color: #bbf7d0; background-color: #f0fdf4; } /* 상태 변경 - 그린 */
+.marker-comment { border-color: #fed7aa; background-color: #fff7ed; } /* 파일/댓글 - 오렌지 */
+.marker-wiki    { border-color: #e9d5ff; background-color: #f3e8ff; } /* 위키 변경 - 퍼플 */
+
+/* 텍스트 스타일링 */
+.timeline-info {
+    font-size: 0.95rem;
+    color: #334155;
+    line-height: 1.4;
+}
+.timeline-info strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+.timeline-meta {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
     </style>
 </head>
 <body>
 <section>
     <div class="dashboard-container">
         
-        <!-- 1. 좌측 칼럼 (프로젝트 & 내 일감) -->
-        <div class="main-column">
-            <!-- [플레이스홀더] 프로젝트 섹션 -->
-            <div class="dashboard-card" id="my-projects-module">
+        <div class="dashboard-card" id="my-projects-module">
             <div class="card-header-title">프로젝트</div>
             <div class="card-body">
                 <div class="loading-spinner">
@@ -232,44 +330,49 @@
             </div>
         </div>
 
-            <!-- [플레이스홀더] 내 일감 섹션 -->
-            <div class="dashboard-card">
-                <div class="card-header-title">내 일감</div>
-                <div style="color: #94a3b8; font-size:0.9rem; text-align:center; padding:80px 0; border:1px dashed #e2e8f0; border-radius:8px;">
-                    우측 마감 임박 모듈 마그레이션 확인 후 여기에 내 일감 테이블 및 필터가 들어옵니다.
+        <div class="bottom-feed-row">
+            
+            <div class="dashboard-card upcoming-box" id="upcoming-tasks-module">
+                <div class="card-header-title">마감 임박 일감</div>
+                <div class="card-body scrollable-body">
+                    <div class="loading-spinner">
+                        <span>데이터를 불러오는 중입니다...</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 2. 중간 칼럼 (마감 임박 일감 모듈) -->
-        <div class="dashboard-card upcoming-box" id="upcoming-tasks-module">
-            <div class="card-header-title">마감 임박</div>
-            <div class="card-body">
-                <div class="loading-spinner">
-                    <span>데이터를 불러오는 중입니다...</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. 우측 칼럼 (최근 활동 플레이스홀더) -->
-        <div class="dashboard-card">
-            <div class="card-header-title">최근 활동</div>
-            <div style="color: #94a3b8; font-size:0.9rem; text-align:center; padding:100px 0; border:1px dashed #e2e8f0; border-radius:8px;">
-                최근 활동 히스토리 타임라인 영역
-            </div>
+            <div class="dashboard-card" id="recent-activity-module">
+			    <div class="card-header-title">
+			        <span>최근 활동</span>
+			        <select id="activityProjectSelect" class="card-header-select">
+			            <option value="">전체 프로젝트</option>
+			        </select>
+			    </div>
+			    <div class="card-body scrollable-body">
+			        <div class="loading-spinner">
+			            <span>데이터를 불러오는 중입니다...</span>
+			        </div>
+			    </div>
+			</div>
+            
         </div>
 
     </div>
 
     <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
-        // 대시보드 진입 시 두 가지 모듈을 비동기로 각각 호출합니다.
         loadMyProjects();
         loadUpcomingTasks();
+        loadRecentActivities();
+        
+     	// 프로젝트 변경 이벤트 리스너 리액션 기입
+        document.getElementById("activityProjectSelect").addEventListener("change", function(e) {
+            loadRecentActivities(e.target.value);
+        });
     });
 
     /**
-     * 1. 내가 참여 중인 프로젝트 목록을 REST API(/api/dashboard/my-projects)로부터 호출
+     * 1. 내가 참여 중인 프로젝트 목록 API 호출
      */
      function loadMyProjects() {
          const container = document.querySelector("#my-projects-module .card-body");
@@ -293,11 +396,11 @@
      }
 
      /**
-      * [렌더링] 프로젝트 데이터를 받아 그리드 카드 HTML 동적 주입
+      * 2. 프로젝트 데이터 동적 렌더링
       */
      function renderMyProjects(projects, targetContainer) {
          if (!projects || projects.length === 0) {
-             targetContainer.innerHTML = `<div class="empty-msg" style="text-align: center; color: #94a3b8; padding: 40px 0; font-size: 0.9rem;">참여 중인 프로젝트가 없습니다.</div>`;
+             targetContainer.innerHTML = `<div class="empty-msg">참여 중인 프로젝트가 없습니다.</div>`;
              return;
          }
 
@@ -335,10 +438,10 @@
      }
 
      /**
-      * [호출] 마감 임박 일감 데이터를 API로부터 Fetch
+      * 3. 마감 임박 일감 데이터 API 호출
       */
      function loadUpcomingTasks() {
-         const container = document.querySelector("#upcoming-tasks-module .card-body");
+         const container = document.querySelector("#upcoming-tasks-module .scrollable-body");
          if (!container) return;
 
          fetch('/api/dashboard/upcoming-tasks', {
@@ -359,40 +462,11 @@
      }
 
     /**
-     * 3. 마감 임박 일감 데이터를 REST API(/api/dashboard/upcoming-tasks)로부터 호출
-     */
-    function loadUpcomingTasks() {
-        const container = document.querySelector("#upcoming-tasks-module .card-body");
-        if (!container) return;
-
-        fetch('/api/dashboard/upcoming-tasks', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('일감 데이터를 가져오는 데 실패했습니다.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // 일감 데이터 동적 렌더링 함수 호출
-            renderUpcomingTasks(data, container);
-        })
-        .catch(error => {
-            console.error('Error fetching tasks:', error);
-            container.innerHTML = `<p style="color: #f43f5e; text-align:center; font-size:0.9rem; padding: 20px 0;">일감 정보를 불러오는 중 오류가 발생했습니다.</p>`;
-        });
-    }
-
-    /**
-     * 4. 받아온 일감 데이터를 D-Day 배지형 카드 리스트로 동적 생성
+     * 4. 받아온 일감 데이터 동적 렌더링
      */
     function renderUpcomingTasks(tasks, targetContainer) {
         if (!tasks || tasks.length === 0) {
-            targetContainer.innerHTML = `<div class="empty-msg" style="text-align: center; color: #94a3b8; padding: 40px 0; font-size: 0.9rem;">마감 예정인 일감이 없습니다. 🎉</div>`;
+            targetContainer.innerHTML = `<div class="empty-msg">마감 예정인 일감이 없습니다. 🎉</div>`;
             return;
         }
 
@@ -418,7 +492,7 @@
     }
 
     /**
-     * [유틸] 마감일 날짜 문자열을 활용해 오늘 기준 D-Day 연산
+     * [유틸] D-Day 연산
      */
     function calculateDDay(finishDateStr) {
         if (!finishDateStr) return 'D-?';
@@ -436,26 +510,155 @@
     }
 
     /**
-     * [유틸] 남은 일수 상황에 매칭할 CSS 클래스 추출
+     * [유틸] 배지 색상 매칭
      */
     function getBadgeClass(ddayText) {
         if (ddayText === 'D-Day') return 'badge-danger';
         const days = parseInt(ddayText.replace('D-', ''));
         if (isNaN(days)) return 'badge-info';
         
-        if (days <= 2) return 'badge-danger';  // 마감 1~2일 전 (위험 레드)
-        if (days <= 5) return 'badge-warning'; // 마감 3~5일 전 (경고 오렌지)
-        return 'badge-info';                   // 마감 6일 이상 (안정 블루)
+        if (days <= 2) return 'badge-danger';  
+        if (days <= 5) return 'badge-warning'; 
+        return 'badge-info';                   
     }
 
     /**
-     * [보안] XSS(크로스 사이트 스크립팅) 방지용 HTML 이스케이프 처리
+     * [보안] XSS 방지
      */
     function escapeHtml(str) {
         if(!str) return '';
         return String(str).replace(/[&<>"']/g, function (m) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
         });
+    }
+    
+    /**
+     * 5. 최근 활동 데이터 API 호출
+     */
+    function loadRecentActivities(projectId = "") {
+        const container = document.querySelector("#recent-activity-module .scrollable-body");
+        if (!container) return;
+
+        container.innerHTML = `<div class="loading-spinner"><span>데이터를 불러오는 중입니다...</span></div>`;
+
+        let url = '/api/dashboard/recent-activities';
+        if (projectId) {
+            url += `?projectId=${projectId}`;
+        }
+
+        fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('최근 활동 데이터를 가져오는 데 실패했습니다.');
+            return response.json();
+        })
+        .then(data => {
+            renderRecentActivities(data, container);
+        })
+        .catch(error => {
+            console.error('Error fetching activities:', error);
+            container.innerHTML = `<p style="color: #f43f5e; text-align:center; font-size:0.9rem; padding: 20px 0;">활동 히스토리를 불러오는 중 오류가 발생했습니다.</p>`;
+        });
+    }
+
+    /**
+     * 6. 최근 활동 템플릿 타임라인 렌더링
+     */
+    function renderRecentActivities(logs, targetContainer) {
+        if (!logs || logs.length === 0) {
+            targetContainer.innerHTML = `<div class="empty-msg" style="padding:100px 0;">최근 기록된 활동 이력이 없습니다.</div>`;
+            return;
+        }
+
+        let html = `<div class="timeline-container">`;
+
+        logs.forEach(log => {
+            // 액션 타입별 문구정의 및 마커 스킨 색상 매칭
+            let actionText = "변경";
+            let markerClass = "marker-update";
+
+            if (log.typeName === '위키') {
+                markerClass = "marker-wiki";
+                actionText = (log.actionType === 'CREATE') ? "위키 생성" : "위키 수정";
+            } else {
+                if (log.actionType === 'CREATE') {
+                    actionText = "일감 생성";
+                    markerClass = "marker-create";
+                } else if (log.actionType === 'DELETE') {
+                    actionText = "일감 삭제";
+                    markerClass = "marker-delete";
+                } else if (log.defaultDescribe && log.defaultDescribe.includes("댓글")) {
+                    actionText = "댓글 작성";
+                    markerClass = "marker-comment";
+                } else {
+                    actionText = log.defaultDescribe || "상태 변경";
+                    markerClass = "marker-update";
+                }
+            }
+
+            const relativeTime = convertRelativeToTime(log.actionAt);
+
+            html += `
+                <div class="timeline-item">
+                    <div class="timeline-marker ${markerClass}"></div>
+                    <div class="timeline-info">
+                        <strong>${escapeHtml(log.userName)}</strong> ${actionText} — ${escapeHtml(log.taskTitle)}
+                    </div>
+                    <div class="timeline-meta">
+                        ${escapeHtml(log.projectTitle)} · ${relativeTime}
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+        targetContainer.innerHTML = html;
+    }
+
+    /**
+     * 7. 프로젝트 로드 후 헤더 드롭다운 옵션도 동시 전파하도록 수정
+     * (기존 renderMyProjects 함수의 최하단 영역에 구문을 덧붙이거나 가공하세요)
+     */
+    const originalRenderMyProjects = renderMyProjects;
+    renderMyProjects = function(projects, targetContainer) {
+        originalRenderMyProjects(projects, targetContainer); // 기존 렌더링 실행
+        
+        // 최근 활동 헤더 내 셀렉트 박스 동적 바인딩
+        const selectBox = document.getElementById("activityProjectSelect");
+        if (selectBox && projects && selectBox.options.length <= 1) { 
+            projects.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.projectId;
+                opt.textContent = p.projectTitle;
+                selectBox.appendChild(opt);
+            });
+        }
+    }
+
+    /**
+     * [유틸] 이미지 요구사항 맞춤형 경과시간(상대 시간) 계산기
+     */
+    function convertRelativeToTime(dateStr) {
+        if (!dateStr) return "-";
+        
+        const now = new Date();
+        const past = new Date(dateStr);
+        const diffMs = now.getTime() - past.getTime();
+        
+        const diffMins = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMins / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffMins < 1) return "방금 전";
+        if (diffMins < 60) return `${diffMins}분 전`;
+        if (diffHours < 24) return `${diffHours}시간 전`;
+        if (diffDays === 1) return "어제";
+        if (diffDays < 7) return `${diffDays}일 전`;
+        
+        // 오래된 데이터는 표준 포맷 출력
+        return dateStr.substring(0, 10).replace(/-/g, '.');
     }
 </script>
 </section>
