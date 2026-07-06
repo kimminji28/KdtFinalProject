@@ -26,6 +26,13 @@ public class OutlineController {
 	@GetMapping("/project/outline")
 	public String getProjectOutline(@RequestParam Long projectId, Model model) {
 		
+		// [추가] 모듈 맵핑 권한 체크 (d1 모듈 활성화 여부 확인)
+		if (!outlineService.checkOutlineModuleActive(projectId)) {
+			model.addAttribute("accessDenideTitle", "접근 권한이 없습니다.");
+			model.addAttribute("accessDenideMessage", "해당 프로젝트의 개요(d1) 모듈이 비활성화 상태입니다. 관리자에게 문의하세요.");
+			return "weple/access-denide";
+		}
+		
 		model.addAttribute("currentMenu", "outline");
 		model.addAttribute("sidebarMenu", "project");
 		model.addAttribute("projectId", projectId); 
@@ -41,9 +48,7 @@ public class OutlineController {
 	    
 		// 그룹별 프로젝트 참여 멤버 조회
 		List<ProjectGroupMemberDTO> groupMembers = outlineService.selectProjectMembersByGroup(projectId);
-		
 		model.addAttribute("groupMembers", groupMembers);
-		
 		
 		// 프로젝트 총 추정/소요 시간 조회 
 		ProjectProgressDTO progressData = outlineService.getProjectProgress(projectId);

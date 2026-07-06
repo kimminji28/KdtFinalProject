@@ -472,6 +472,13 @@
 	    )
 	    WHERE m.milestone_id = #{milestoneId}
 	</update>
+	
+	<select id="checkProjectMembership" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM members
+	    WHERE PROJECT_ID = #{projectId}
+	      AND USER_CODE = #{userCode}
+	</select>
     
     
     

@@ -68,5 +68,13 @@
           AND m.parent_milestone_id IS NULL
         ORDER BY m.created_at DESC, c.created_at ASC
     </select>
+    
+    <select id="isModuleActive" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM module_mapping
+        WHERE project_id = #{projectId}
+          AND module_name = #{moduleName}
+          AND is_active = 'Y'
+    </select>
 	
 </mapper>

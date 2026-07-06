@@ -295,4 +295,11 @@ public class GanttServiceImpl implements GanttService {
             }
         }
     }
+    
+ // [추가] d6 모듈이 활성화되어 있는지 검증 (존재하면 true, 없으면 false)
+    @Override
+    public boolean checkGanttModuleActive(Long projectId) {
+        int count = ganttMapper.isModuleActive(projectId, "d6");
+        return count > 0;
+    }
 }

@@ -47,6 +47,8 @@ public class MilestoneController {
 	public String milestoneList(@AuthenticationPrincipal LoginUserDetails loginUser, // [추가]
 								@RequestParam Long projectId, 
 								Model model) {
+		
+		
 		// 권한 체크 및 뷰단 버튼 제어용 속성 추가
 		Set<String> permissionCodes = findMilestonePermissionCodes(loginUser, projectId);
 		addMilestonePermissionAttributes(model, permissionCodes);

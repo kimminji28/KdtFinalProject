@@ -43,6 +43,14 @@
     WHERE t.project_id = #{projectId}
 </select>
 
+<select id="isModuleActive" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM module_mapping
+        WHERE project_id = #{projectId}
+          AND module_name = #{moduleName}
+          AND is_active = 'Y'
+    </select>
+
 
 
 

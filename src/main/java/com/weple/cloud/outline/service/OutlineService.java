@@ -12,5 +12,7 @@ public interface OutlineService {
 
 	ProjectProgressDTO getProjectProgress(Long projectId);
 
+	boolean checkOutlineModuleActive(Long projectId);
+
 
 }

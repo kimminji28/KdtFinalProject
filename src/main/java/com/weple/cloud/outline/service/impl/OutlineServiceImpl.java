@@ -124,5 +124,12 @@ public class OutlineServiceImpl implements OutlineService {
 	    });
 	    return list;
 	}
+	
+	// [추가] d1 모듈이 활성화되어 있는지 검증 (존재하면 true, 없으면 false)
+    @Override
+    public boolean checkOutlineModuleActive(Long projectId) {
+        int count = outlineMapper.isModuleActive(projectId, "d1");
+        return count > 0;
+    }
 
 }

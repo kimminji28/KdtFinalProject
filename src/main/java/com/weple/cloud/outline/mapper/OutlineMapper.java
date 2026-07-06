@@ -20,6 +20,9 @@ public interface OutlineMapper {
 	
 	// 프로젝트 전체 요약 (시간 + 총 진척도)
     List<RawTaskDTO> selectRawTaskDetails(@Param("projectId") Long projectId);
+    
+    // 개요 모듈 조회
+    int isModuleActive(@Param("projectId") Long projectId, @Param("moduleName") String moduleName);
 
     
 }
