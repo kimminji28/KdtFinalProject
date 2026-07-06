@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.weple.cloud.dashboard.mapper.DashboardMapper;
 import com.weple.cloud.dashboard.service.DashboardProjectDTO;
 import com.weple.cloud.dashboard.service.DashboardService;
-import com.weple.cloud.history.worklog.service.WorkLogVO;
+import com.weple.cloud.dashboard.service.WorkLog2VO;
 import com.weple.cloud.project.service.ProjectService;
 import com.weple.cloud.project.service.ProjectVO;
 import com.weple.cloud.task.service.TaskVO;
@@ -41,7 +41,7 @@ public class DashboardServiceImpl implements DashboardService {
     
     
     @Override
-    public List<WorkLogVO> getRecentActivities(com.weple.cloud.auth.service.LoginUserVO loginUser, String projectId, int limit) {
+    public List<WorkLog2VO> getRecentActivities(com.weple.cloud.auth.service.LoginUserVO loginUser, String projectId, int limit) {
         List<Long> allowedProjectIds = new ArrayList<>();
         boolean isAdmin = Integer.valueOf(1).equals(loginUser.getOwnerYn()) 
                        || Integer.valueOf(1).equals(loginUser.getAdminYn());

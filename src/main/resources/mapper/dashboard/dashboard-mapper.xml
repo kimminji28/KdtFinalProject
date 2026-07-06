@@ -60,7 +60,7 @@
         ORDER BY p.created_at DESC, p.project_id DESC
     </select>
     
-    <select id="selectRecentActivities" resultType="com.weple.cloud.history.worklog.service.WorkLogVO">
+    <select id="selectRecentActivities" resultType="WorkLog2VO">
     SELECT * FROM (
         SELECT * FROM (
             SELECT
@@ -69,7 +69,7 @@
                 t.project_id AS projectId,
                 p.project_title AS projectTitle,
                 u.user_name AS userName,
-                u.profile_image AS profileImage, 
+                u.profile_image AS profileImage,
                 NVL(d_title.new_value, t.task_title) AS taskTitle,
                 NVL(d_type.new_value, tt.type_name) AS typeName,
                 cc.default_describe AS defaultDescribe,
@@ -84,6 +84,7 @@
             LEFT JOIN task_history_detail d_type ON th.history_id = d_type.history_id AND d_type.field_name = 'type_name'
             LEFT OUTER JOIN common_code cc ON t.task_status = cc.common_id AND cc.common_code = '0E'
             <where>
+                AND th.action_at &gt;= TRUNC(SYSDATE) - 3
                 <if test="projectIds != null and projectIds.size() > 0">
                     AND t.project_id IN
                     <foreach collection="projectIds" item="pId" open="(" separator="," close=")">
@@ -110,6 +111,7 @@
             JOIN users u2 ON w.user_code = u2.user_code
             LEFT JOIN project p2 ON w.project_id = p2.project_id
             <where>
+                AND w.created_at &gt;= TRUNC(SYSDATE) - 3
                 <if test="projectIds != null and projectIds.size() > 0">
                     AND w.project_id IN
                     <foreach collection="projectIds" item="pId" open="(" separator="," close=")">
@@ -137,6 +139,7 @@
             JOIN users u3 ON h.user_code = u3.user_code
             LEFT JOIN project p3 ON wp.project_id = p3.project_id
             <where>
+                AND h.created_at &gt;= TRUNC(SYSDATE) - 3
                 <if test="projectIds != null and projectIds.size() > 0">
                     AND wp.project_id IN
                     <foreach collection="projectIds" item="pId" open="(" separator="," close=")">
