@@ -15,4 +15,7 @@ public interface GanttMapper {
     
  // [추가] 프로젝트별 특정 모듈 활성화 카운트 조회
     int isModuleActive(@Param("projectId") Long projectId, @Param("moduleName") String moduleName);
+    
+ // 프로젝트 접근 권한여부
+ 	int checkProjectMembership(@Param("projectId") Long projectId, @Param("userCode") String userCode);
 }

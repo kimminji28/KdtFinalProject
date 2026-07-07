@@ -14,5 +14,7 @@ public interface OutlineService {
 
 	boolean checkOutlineModuleActive(Long projectId);
 
+	boolean checkProjectMembership(Long projectId, String userCode);
+
 
 }

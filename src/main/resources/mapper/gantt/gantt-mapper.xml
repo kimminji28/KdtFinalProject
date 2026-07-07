@@ -76,5 +76,12 @@
           AND module_name = #{moduleName}
           AND is_active = 'Y'
     </select>
+    
+    <select id="checkProjectMembership" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM members
+	    WHERE PROJECT_ID = #{projectId}
+	      AND USER_CODE = #{userCode}
+	</select>
 	
 </mapper>

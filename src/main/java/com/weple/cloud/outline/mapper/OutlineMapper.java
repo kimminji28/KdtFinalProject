@@ -24,5 +24,6 @@ public interface OutlineMapper {
     // 개요 모듈 조회
     int isModuleActive(@Param("projectId") Long projectId, @Param("moduleName") String moduleName);
 
-    
+ // 프로젝트 접근 권한여부
+  	int checkProjectMembership(@Param("projectId") Long projectId, @Param("userCode") String userCode);
 }
