@@ -219,6 +219,7 @@ src/main/resources
 ├── static        # CSS, JavaScript, 이미지 등 정적 리소스
 └── templates     # Thymeleaf 화면 템플릿
 
+````
 
 실행 방법
 
