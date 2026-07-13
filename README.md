@@ -1,4 +1,4 @@
-# WEPLE : 함께 만드는 연결된 협업 플랫폼
+<img width="4780" height="3042" alt="3 논리 ERD 캡처" src="https://github.com/user-attachments/assets/ac2839a8-a13f-41a9-8292-4f88549449aa" /># WEPLE : 함께 만드는 연결된 협업 플랫폼
 
 WEPLE은 프로젝트 수행 과정에서 발생하는 일정, 일감, 산출물, 커뮤니케이션, 저장소 이력을 **하나의 흐름으로 관리할 수 있는 웹 기반 협업 플랫폼**입니다.
 
@@ -91,7 +91,7 @@ WEPLE은 프로젝트 수행 과정에서 발생하는 일정, 일감, 산출물
 ## 프로젝트 미리보기
 
 ### 메인 화면
-![메인화면](./docs/main.png)
+<img width="1920" height="945" alt="메인화면" src="https://github.com/user-attachments/assets/2ab4bf2b-ef1f-4a08-aa0d-4b9ba5b9a59d" />
 
 ### 시스템 구성도
 ![시스템구성도](./docs/system_flow.png)
@@ -100,10 +100,7 @@ WEPLE은 프로젝트 수행 과정에서 발생하는 일정, 일감, 산출물
 ![자료흐름도](./docs/data_flow.png)
 
 ### ERD
-![ERD](./docs/erd.png)
-
-> 위 이미지는 예시 경로입니다.
-> 실제 이미지 파일명에 맞게 `./docs/...` 경로를 수정해서 사용하세요.
+<img width="4780" height="3042" alt="3 논리 ERD 캡처" src="https://github.com/user-attachments/assets/631fc03f-8743-4c79-b42e-71bba9af3556" />
 
 ---
 
@@ -251,5 +248,3 @@ WEPLE/
 │
 └── README.md
 ```
-
----
