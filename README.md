@@ -95,7 +95,38 @@
   </tr>
 </table>
 
----
+## 기술 스택
+
+### Backend
+- Java 21
+- Spring Boot 3.5.16
+- Spring MVC
+- Spring Security
+- MyBatis
+- Oracle Database
+- Jasypt
+
+### Frontend
+- Thymeleaf
+- JavaScript
+- HTML5
+- CSS3
+
+### External / Infra
+- GitHub REST API
+- AWS S3
+- AWS EC2
+- Docker
+- Jenkins
+- GitHub Actions
+
+### Dev Tools
+- IntelliJ IDEA
+- Oracle SQL Developer
+
+### Collaboration
+- Git
+- GitHub
 
 ## 기술 스택 시각화
 
@@ -108,8 +139,6 @@
 | Dev Tools | ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white) |
 | Collaboration | ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
 | Deployment | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white) |
-
----
 
 ## 내가 담당한 기능
 
@@ -140,23 +169,90 @@ Java, Spring Boot, Spring Security, MyBatis, Thymeleaf, JavaScript, HTML/CSS, Or
 * 관리자 : 파일 목록 조회, 등록, 상세조회, 다운로드, 삭제, 다운로드 이력 조회
 * 사용자 : 파일 목록 조히, 등록, 상세조회, 다운로드
 
-## 프로젝트 미리보기
-
-### 메인 화면
-<img width="1920" height="945" alt="메인화면" src="https://github.com/user-attachments/assets/2ab4bf2b-ef1f-4a08-aa0d-4b9ba5b9a59d" />
-
-### 시스템 구성도
-<img width="3600" height="1920" alt="weple_system_architecture_v2" src="https://github.com/user-attachments/assets/3a764766-5fc7-45cf-9f60-b080eba3e473" />
-
-### 자료 흐름도
-<img width="2720" height="2000" alt="weple_dfd_v2_white_bg" src="https://github.com/user-attachments/assets/3230e7e4-c6f0-4313-8028-587dd1ee870a" />
-
-### ERD
-<img width="4780" height="3042" alt="3 논리 ERD 캡처" src="https://github.com/user-attachments/assets/631fc03f-8743-4c79-b42e-71bba9af3556" />
-
 ---
 
-## 주요 기능
+## 프로젝트 구조
+
+```bash
+WEPLE/
+├── src/main/java/com/weple/cloud
+│   ├── auth          # 인증 관련 기능
+│   ├── system         # 시스템 및 관리자 기능
+│   ├── project        # 프로젝트 관련 기능
+│   ├── repository     # 저장소 연동 기능
+│   └── ...            # 일감, 파일, 위키, 알림 등 협업 기능
+│
+├── src/main/resources
+│   ├── mapper          # MyBatis Mapper XML
+│   ├── static           # CSS, JavaScript, 이미지 등 정적 리소스
+│   └── templates        # Thymeleaf 화면 템플릿
+│
+├── docs/
+│   ├── main.png
+│   ├── system_flow.png
+│   ├── data_flow.png
+│   └── erd.png
+│
+└── README.md
+```
+
+
+### 프로세스 구성도
+<img width="1049" height="482" alt="프로세스 구성도" src="https://github.com/user-attachments/assets/68502ace-da10-4126-842e-394eea1c0adb" />
+
+
+### 업무 흐름도
+<img width="1036" height="513" alt="업무흐름도" src="https://github.com/user-attachments/assets/d74f04ee-b157-498b-9aa0-fc9af08f7806" />
+
+
+### ERD
+<img width="961" height="564" alt="erd" src="https://github.com/user-attachments/assets/1b394350-f234-49a3-8d66-c481a10f5f91" />
+
+## 메인화면
+
+### 회원가입
+
+### 가입승인
+
+### 로그인
+
+### 프로젝트 생성
+
+### 프로젝트 개요
+
+### 구성원 관리
+
+### 로드맵
+
+### 버전 및 마일스톤 등록
+
+### 일감 등록
+
+### 소요시간
+<img width="1433" height="889" alt="소요시간 목록" src="https://github.com/user-attachments/assets/5abbda68-c523-45dd-b2c5-779896203d18" />
+
+### 작업내역
+
+### 파일관리
+<img width="1429" height="889" alt="파일목록" src="https://github.com/user-attachments/assets/df4daf7e-1e22-45ed-a29a-eeaf57f0378a" />
+
+### 테스트 케이스
+
+### 위키
+
+### 간트차트
+
+### 칸반보드
+
+### 캘린더
+
+### 저장소
+
+### 알림
+
+
+## 전체 주요 기능<img width="1433" height="889" alt="소요시간 목록" src="https://github.com/user-attachments/assets/d5f8e664-04ac-43c4-a75d-cf34d72a5663" />
+
 
 ### 관리
 - 회사별 사용자 가입승인
@@ -200,8 +296,6 @@ Java, Spring Boot, Spring Security, MyBatis, Thymeleaf, JavaScript, HTML/CSS, Or
 - 커밋 상세 및 변경 내역 확인
 - 커밋 메시지 기반 일감 연결
 
----
-
 ## 업무 흐름
 
 1. 관리자가 프로젝트를 생성하고 구성원과 역할·권한을 설정합니다.
@@ -214,62 +308,6 @@ Java, Spring Boot, Spring Security, MyBatis, Thymeleaf, JavaScript, HTML/CSS, Or
 
 ---
 
-## 기술 스택
 
-### Backend
-- Java 21
-- Spring Boot 3.5.16
-- Spring MVC
-- Spring Security
-- MyBatis
-- Oracle Database
-- Jasypt
 
-### Frontend
-- Thymeleaf
-- JavaScript
-- HTML5
-- CSS3
 
-### External / Infra
-- GitHub REST API
-- AWS S3
-- AWS EC2
-- Docker
-- Jenkins
-- GitHub Actions
-
-### Dev Tools
-- IntelliJ IDEA
-- Oracle SQL Developer
-
-### Collaboration
-- Git
-- GitHub
-
----
-
-## 프로젝트 구조
-
-```bash
-WEPLE/
-├── src/main/java/com/weple/cloud
-│   ├── auth          # 인증 관련 기능
-│   ├── system         # 시스템 및 관리자 기능
-│   ├── project        # 프로젝트 관련 기능
-│   ├── repository     # 저장소 연동 기능
-│   └── ...            # 일감, 파일, 위키, 알림 등 협업 기능
-│
-├── src/main/resources
-│   ├── mapper          # MyBatis Mapper XML
-│   ├── static           # CSS, JavaScript, 이미지 등 정적 리소스
-│   └── templates        # Thymeleaf 화면 템플릿
-│
-├── docs/
-│   ├── main.png
-│   ├── system_flow.png
-│   ├── data_flow.png
-│   └── erd.png
-│
-└── README.md
-```
