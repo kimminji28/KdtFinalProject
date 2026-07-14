@@ -211,48 +211,63 @@ WEPLE/
 ## 메인화면
 
 ### 회원가입
+<img width="1137" height="545" alt="회원가입" src="https://github.com/user-attachments/assets/9331fd26-28f1-493b-ac85-9f460ed6db81" />
 
 ### 가입승인
+<img width="1860" height="900" alt="가입승인" src="https://github.com/user-attachments/assets/14e6284a-9c95-45ee-859a-1eb4715be52d" />
 
 ### 로그인
+<img width="1860" height="900" alt="로그인" src="https://github.com/user-attachments/assets/dcda564f-65f3-4d58-9b02-6c8d4fe27863" />
 
 ### 프로젝트 생성
+<img width="1860" height="900" alt="프로젝트 생성" src="https://github.com/user-attachments/assets/349b7a4c-14b7-4f9a-a376-556c36346c28" />
 
 ### 프로젝트 개요
+<img width="1860" height="900" alt="개요" src="https://github.com/user-attachments/assets/375a3831-c787-4f2b-80ca-102b5c674f98" />
 
 ### 구성원 관리
+<img width="1860" height="900" alt="구성원 관리" src="https://github.com/user-attachments/assets/6051e5f8-3d9f-4b68-aa42-eea2694b994e" />
 
 ### 로드맵
+<img width="1860" height="900" alt="로드맵" src="https://github.com/user-attachments/assets/73066a66-e79f-4ac0-8a13-d8872c1da527" />
 
-### 버전 및 마일스톤 등록
+### 버전/마일스톤 등록
+<img width="1860" height="900" alt="로드맵 추가" src="https://github.com/user-attachments/assets/5d0af986-dfbd-4bd8-8f0c-e91ef37c69e5" />
 
 ### 일감 등록
+<img width="1860" height="900" alt="일감" src="https://github.com/user-attachments/assets/f4a02b38-b556-4023-ac3f-65d7435fa886" />
 
 ### 소요시간
 <img width="1433" height="889" alt="소요시간 목록" src="https://github.com/user-attachments/assets/5abbda68-c523-45dd-b2c5-779896203d18" />
 
 ### 작업내역
+<img width="1860" height="900" alt="작업내역" src="https://github.com/user-attachments/assets/8596d4c9-a513-40d9-b6df-33cdae012369" />
 
 ### 파일관리
 <img width="1429" height="889" alt="파일목록" src="https://github.com/user-attachments/assets/df4daf7e-1e22-45ed-a29a-eeaf57f0378a" />
 
 ### 테스트 케이스
+<img width="1860" height="900" alt="테스트" src="https://github.com/user-attachments/assets/da47b482-ea9c-42f1-b2d7-31a78eb3312c" />
 
 ### 위키
+<img width="1860" height="900" alt="위키" src="https://github.com/user-attachments/assets/ee7a57c3-f8b2-4e3b-b024-b9390f4d9448" />
 
 ### 간트차트
+<img width="1860" height="900" alt="간트차트" src="https://github.com/user-attachments/assets/bbc07b74-4b47-4049-8f98-348be4b43e1d" />
 
 ### 칸반보드
+<img width="1860" height="900" alt="칸반보드" src="https://github.com/user-attachments/assets/fab0a962-0992-4e9a-997d-cbcd5f0ac8bd" />
 
 ### 캘린더
+<img width="1860" height="900" alt="캘린더" src="https://github.com/user-attachments/assets/c9059d56-097b-4cfc-9199-b2bccbf3d708" />
 
 ### 저장소
+<img width="1860" height="900" alt="저장소" src="https://github.com/user-attachments/assets/5413313c-ee23-4643-a134-b3e6a0053755" />
 
 ### 알림
+<img width="1860" height="900" alt="알림" src="https://github.com/user-attachments/assets/7d778e3a-e4a4-4840-a78d-656d32dc8d39" />
 
-
-## 전체 주요 기능<img width="1433" height="889" alt="소요시간 목록" src="https://github.com/user-attachments/assets/d5f8e664-04ac-43c4-a75d-cf34d72a5663" />
-
+## 전체 주요 기능
 
 ### 관리
 - 회사별 사용자 가입승인
