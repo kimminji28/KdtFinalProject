@@ -1,24 +1,23 @@
 # WEPLE : 함께 만드는 연결된 협업 플랫폼
  
-WEPLE은 프로젝트 수행 과정에서 발생하는 일정, 일감, 산출물, 커뮤니케이션, 저장소 이력을 **하나의 흐름으로 관리할 수 있는 웹 기반 협업 플랫폼**입니다.
+* WEPLE은 프로젝트 수행 과정에서 발생하는 일정, 일감, 산출물, 커뮤니케이션, 저장소 이력을 **하나의 흐름으로 관리할 수 있는 웹 기반 협업 플랫폼**입니다.
  
-팀 단위 프로젝트를 진행하면서 구성원, 역할, 권한, 일감, 파일, 위키, 알림, 저장소 정보를 통합적으로 관리하는 것을 목표로 개발되었습니다.
+* 팀 단위 프로젝트를 진행하면서 구성원, 역할, 권한, 일감, 파일, 위키, 알림, 저장소 정보를 통합적으로 관리하는 것을 목표로 개발되었습니다.
  
-본 프로젝트는 여러 협업 도구를 오가며 발생하는 비효율을 해소하고, 실무자 관점에서의 기능 설계를 적용하여 프로젝트 관리 업무를 보다 체계적이고 효율적으로 처리할 수 있도록 개발되었습니다.
+* 본 프로젝트는 여러 협업 도구를 오가며 발생하는 비효율을 해소하고, 실무자 관점에서의 기능 설계를 적용하여 프로젝트 관리 업무를 보다 체계적이고 효율적으로 처리할 수 있도록 개발되었습니다.
 
----
+## 프로젝트 개요
 
-# 프로젝트 개요
-
----
-
-WEPLE은 프로젝트·일감·저장소·위키·소요시간·로드맵을 하나의 플랫폼에서 통합 관리하는 협업툴입니다.
-
-프로젝트 생성부터 일감 관리, 칸반보드, 간트차트, 알림까지 실무 전 과정을 하나의 플랫폼에서 제공합니다.
+- **프로젝트명**: WEPLE
+- **프로젝트 유형**: 팀 프로젝트 (5인)
+- **개발 기간**: 2026.06.08 ~ 2026.07.14
+- **개발 목적**
+  - 프로젝트·일정·산출물 관리 업무 통합 및 전산화
+  - 역할 및 권한 기반 접근 제어 구현
+  - 일감/저장소/위키 등 협업 도구 분산 문제 해소
+  - GitHub 연동을 통한 커밋-일감 추적 체계 구축
 
 ## 팀 구성 및 역할
-
----
 
 <table align="center">
   <tr>
@@ -98,6 +97,49 @@ WEPLE은 프로젝트·일감·저장소·위키·소요시간·로드맵을 하
 
 ---
 
+## 기술 스택 시각화
+
+| 구분 | 사용 기술 |
+|------|----------|
+| Frontend | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white) |
+| Backend | ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white) ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white) |
+| Data & ORM | ![Oracle](https://img.shields.io/badge/Oracle-F00000?style=for-the-badge&logo=oracle&logoColor=white) ![MyBatis](https://img.shields.io/badge/MyBatis-000000?style=for-the-badge) |
+| Cloud & Storage | ![AWS S3](https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white) ![AWS EC2](https://img.shields.io/badge/Amazon_EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white) |
+| Dev Tools | ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white) |
+| Collaboration | ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
+| Deployment | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white) |
+
+---
+
+## 내가 담당한 기능
+
+Java, Spring Boot, Spring Security, MyBatis, Thymeleaf, JavaScript, HTML/CSS, Oracle, AWS-S3 등을 사용해 구현하였고, 개발환경 구축을 담당하였습니다.
+
+#### 1. 개발환경 구축
+* Spring Boot + Oracle + MyBatis + Thymeleaf 기반 프로젝트 구조 설정
+* 공통 레이아웃 구성 및 페이지별 재사용 적용
+
+#### 2. 그룹 및 사용자 관리 (관리자)
+* 그룹별 목록 조회, 등록, 수정, 삭제
+* 그룹 내 사용자 목록 조회, 등록, 수정, 삭제
+
+#### 3. 코드값 관리 (관리자)
+* 코드값 조회, 등록, 수정, 삭제, 순서 변경
+* 코드값의 기본값과 사용중 여부 설정 가능
+
+#### 4. 관리 내부 설정 - 프로젝트 (관리자)
+* 프로젝트 모듈 조회
+* 체크박스로 선택 후 저장 가능
+
+#### 5. 소요시간 관리
+* 관리자 : 전체 소요시간 목록 조회, 등록, 수정, 삭제
+* 사용자 : 소요시간 등록, 본인이 등록한 건만 조회, 수정
+* 관리자/사용자 : 일감 상세조회에서 본인에게 할당된 일감에 한해서 소요시간 등록 가능
+
+#### 6. 파일관리
+* 관리자 : 파일 목록 조회, 등록, 상세조회, 다운로드, 삭제, 다운로드 이력 조회
+* 사용자 : 파일 목록 조히, 등록, 상세조회, 다운로드
+
 ## 프로젝트 미리보기
 
 ### 메인 화면
@@ -111,19 +153,6 @@ WEPLE은 프로젝트·일감·저장소·위키·소요시간·로드맵을 하
 
 ### ERD
 <img width="4780" height="3042" alt="3 논리 ERD 캡처" src="https://github.com/user-attachments/assets/631fc03f-8743-4c79-b42e-71bba9af3556" />
-
----
-
-## 프로젝트 개요
-
-- **프로젝트명**: WEPLE
-- **프로젝트 유형**: 팀 프로젝트 (5인)
-- **개발 기간**: 2026.06.08 ~ 2026.07.14 (약 5주)
-- **개발 목적**
-  - 프로젝트·일정·산출물 관리 업무 통합 및 전산화
-  - 역할 및 권한 기반 접근 제어 구현
-  - 일감/저장소/위키 등 협업 도구 분산 문제 해소
-  - GitHub 연동을 통한 커밋-일감 추적 체계 구축
 
 ---
 
@@ -217,20 +246,6 @@ WEPLE은 프로젝트·일감·저장소·위키·소요시간·로드맵을 하
 ### Collaboration
 - Git
 - GitHub
-
----
-
-## 기술 스택 시각화
-
-| 구분 | 사용 기술 |
-|------|----------|
-| Frontend | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white) |
-| Backend | ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white) ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white) |
-| Data & ORM | ![Oracle](https://img.shields.io/badge/Oracle-F00000?style=for-the-badge&logo=oracle&logoColor=white) ![MyBatis](https://img.shields.io/badge/MyBatis-000000?style=for-the-badge) |
-| Cloud & Storage | ![AWS S3](https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white) ![AWS EC2](https://img.shields.io/badge/Amazon_EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white) |
-| Dev Tools | ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white) |
-| Collaboration | ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
-| Deployment | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white) |
 
 ---
 
